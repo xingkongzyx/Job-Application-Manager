@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
+import { useAppContext } from "../context/appContext";
 
 const initialValues = {
     name: "",
@@ -9,12 +10,12 @@ const initialValues = {
     password: "",
     // 用于检查是否已经在这个网站注册过
     isMember: true,
-    showAlert: false,
 };
 
 function Register() {
     const [values, setValues] = useState(initialValues);
-
+    const contextValues = useAppContext();
+    const { showAlert, isLoading } = contextValues;
     const handleChange = function (event) {
         console.dir(event.target);
         // setValues({ ...values, name: event.target.value });
@@ -37,7 +38,7 @@ function Register() {
         <Wrapper className="full-page">
             <form className="form" onSubmit={onSubmit}>
                 <Logo />
-                {values.showAlert ? <Alert /> : ""}
+                {showAlert ? <Alert /> : ""}
                 <h3>{values.isMember ? "Login" : "Register"}</h3>
 
                 {/* name field */}
