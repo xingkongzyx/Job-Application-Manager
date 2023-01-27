@@ -1,0 +1,29 @@
+{
+    "name": "job_app_tracker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/xingkongzyx/job_app_tracker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/xingkongzyx/job_app_tracker/issues"
+    },
+    "homepage": "https://github.com/xingkongzyx/job_app_tracker#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    },
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2"
+    }
+}
