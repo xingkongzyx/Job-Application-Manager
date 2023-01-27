@@ -345,6 +345,7 @@ export { Logo, FormRow };
 ```
 
 在这之后, register page 使用 formRow
+
 ```js
 function Register() {
     const [values, setValues] = useState(initialValues);
@@ -565,12 +566,21 @@ export const DISPLAY_ALERT = "SHOW_ALERT";
 -   setup imports (reducer and appContext)
 
 ```js
-appContext.js
+appContext.js;
 
-const displayAlert() =>{
-  dispatch({type:DISPLAY_ALERT})
-}
+const AppProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
 
+    const displayAlert = () => {
+        dispatch({ type: DISPLAY_ALERT });
+    };
+
+    return (
+        <AppContext.Provider value={{ ...state, displayAlert }}>
+            {children}
+        </AppContext.Provider>
+    );
+};
 ```
 
 ```js
@@ -604,7 +614,7 @@ const Alert = () => {
 -   [JS Nuggets - Dynamic Object Keys](https://youtu.be/_qxCYtWm0tw)
 
 ```js
-appContext.js;
+Register.js;
 
 const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -614,7 +624,7 @@ const handleChange = (e) => {
 -   get displayAlert function
 
 ```js
-appContext.js;
+Register.js;
 
 const onSubmit = (e) => {
     e.preventDefault();

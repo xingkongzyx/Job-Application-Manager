@@ -15,10 +15,9 @@ const initialValues = {
 function Register() {
     const [values, setValues] = useState(initialValues);
     const contextValues = useAppContext();
-    const { showAlert, isLoading } = contextValues;
-    const handleChange = function (event) {
-        console.dir(event.target);
-        // setValues({ ...values, name: event.target.value });
+    const { showAlert, isLoading, displayAlert } = contextValues;
+    const handleChange = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
     };
 
     // 用于改变当前的状态
@@ -28,10 +27,12 @@ function Register() {
 
     const onSubmit = function (event) {
         event.preventDefault();
-        console.log(
-            "submit form, values is: ",
-            event.target.elements[0].value
-        );
+        const { name, email, password, isMember } = values;
+        if (!email || !password || (!isMember && !name)) {
+            displayAlert();
+            return;
+        }
+        console.log(values);
     };
 
     return (
