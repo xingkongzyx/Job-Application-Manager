@@ -1,5 +1,15 @@
+import User from "../model/User.js";
+
 const register = async (req, res) => {
-    res.send("register route works");
+    // console.log("req body is: ", req.body);
+    try {
+        console.log("req body is: ", req.body);
+        const newUser = await User.create(req.body);
+        res.status(201).json({ newUser });
+    } catch (e) {
+        console.log("error");
+        res.status(500).json({ msg: e });
+    }
 };
 const login = async (req, res) => {
     res.send("log in route works");
