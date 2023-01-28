@@ -1,0 +1,13 @@
+Auth Controller: register, login, updateUser
+router.route('/register').post(register);
+router.route('/login').post(login);
+router.route('/updateUser').patch(updateUser);
+app.use('/api/v1/auth', authRouter);
+
+
+Jobs Controller: createJob, deleteJob, getAllJobs, updateJob, showStats
+router.route('/').post(createJob).get(getAllJobs);
+// place before :id, 防止永远无法到达 ":id"
+router.route('/stats').get(showStats);
+router.route('/:id').delete(deleteJob).patch(updateJob);
+app.use('/api/v1/jobs', jobsRouter);

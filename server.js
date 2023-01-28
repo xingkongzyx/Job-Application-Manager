@@ -9,6 +9,7 @@ dotenv.config();
 
 import connectDB from "./db/connect.js";
 import authRouter from "./routes/authRoutes.js";
+import jobRouter from "./routes/jobRoutes.js";
 
 app.use(express.json());
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/jobs", jobRouter);
 // not found: will be looking for requests that do not match any of our current route. error handler: it's actually looking for errors that are happening in our existing world.
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

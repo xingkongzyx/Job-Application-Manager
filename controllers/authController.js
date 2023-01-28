@@ -1,12 +1,12 @@
-const register = (req, res) => {
-    res.send("register");
+const register = async (req, res) => {
+    res.send("register route works");
 };
-const login = (req, res) => {
-    res.send("log in");
+const login = async (req, res) => {
+    res.send("log in route works");
 };
 
-const updateUser = (req, res) => {
-    res.send("update");
+const updateUser = async (req, res) => {
+    res.send("update route works");
 };
 
 export { register, updateUser, login };
