@@ -9,7 +9,8 @@ import connectDB from "./db/connect.js";
 import authRouter from "./routes/authRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
 import morgan from "morgan";
-
+const app = express();
+app.use(express.json());
 // * 将 .env 中定义的变量进行 register
 dotenv.config();
 
@@ -18,18 +19,12 @@ if (process.env.NODE_ENV !== "production") {
     app.use(morgan("dev"));
 }
 
-const app = express();
-app.use(express.json());
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", jobRouter);
 
-app.get("/api/v1", (req, res) => {
-    res.json({ msg: "hello from server" });
+app.get("/", (req, res) => {
+    res.send("Welcome!");
 });
-// app.get("/", (req, res) => {
-//     res.send("Welcome!");
-// });
 
 // * notFoundMiddleware: will be looking for requests that do not match any of our current route.
 // * errorHandlerMiddleware: it's actually looking for errors that are happening in our existing world.
