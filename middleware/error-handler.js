@@ -2,6 +2,7 @@ import { red, bgWhiteBright } from "console-log-colors";
 
 const errorHandlerMiddleware = (err, req, res, next) => {
     console.log(red.bgWhiteBright.bold(err.message));
+    // * 使用一个 defaultError obj 来记录本次故障应该返回的 status code 以及 error message
     const defaultError = {
         statusCode: err.statusCode || 500,
         msg: err.message || "Something went wrong, try again later!",

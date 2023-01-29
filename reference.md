@@ -1703,6 +1703,8 @@ password: {
 
 I don't want to share that. For example, if I'm going to use findOne, then password will be excluded. 但是使用 User.create() 我们仍然可以得到 password
 
+## Section 16: Connect Front-End and Server
+
 #### Concurrently
 
 -   front-end and backend (server)
@@ -1721,6 +1723,7 @@ npm install concurrently --save-dev
 // --prefix client - folder
 // cd client && npm start
 // escape quotes
+// --ignore client: 当在 client 端进行 code change 的时候，不会导致 server 的 restart, 只会是 frontend side 的 restart
 
 "scripts": {
     "server": "nodemon server --ignore client",
@@ -1731,11 +1734,12 @@ npm install concurrently --save-dev
 
 #### Cors Error
 
-[Cors Error](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+-   此时如果在前端想 fetch 后端的数据, 由于 cors error 是无法成功的. 因为 Both of our applications are living on separate servers, 一个在 localhost:5000, 另一个在 localhost:3000
+    [Cors Error](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
 
 -   two fixes (cors package and proxy)
 
-#### Cors Package
+#### 针对 cors error 的第一种解决办法: Cors Package
 
 [cors package](https://www.npmjs.com/package/cors)
 
@@ -1744,6 +1748,7 @@ npm install cors
 ```
 
 ```js
+server.js;
 import cors from "cors";
 
 app.use(cors());
@@ -1753,13 +1758,15 @@ app.use(cors());
 
 -   access from anywhere
 -   don't want to use full url
-
-[cra proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
+-   使用 Proxy 的好处: First, in the front end will be able to use /endpoint to fetch data from backend node server. Second, we won't need to use the CORS package on our server altogether
+    [cra proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
 
 ```js
+// ! 在 client side 中的 package.json 中添加下面的 script:
 "proxy":"http://localhost:5000"
 ```
 
+-   必须要重启 server
 -   my preference to remove trailing slash /
 -   restart app
 

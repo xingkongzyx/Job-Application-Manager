@@ -30,3 +30,6 @@ class CustomAPIError extends Error {
     }
 }
 => And we have BadRequestError, NotFoundError extends CustomAPIError, 并且可以自己定义 error message
+
+
+https://kb.objectrocket.com/mongo-db/how-to-add-instance-methods-with-mongoose-236
