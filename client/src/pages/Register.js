@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { useAppContext } from "../context/appContext";
@@ -14,8 +15,10 @@ const initialValues = {
 
 function Register() {
     const [values, setValues] = useState(initialValues);
+    const navigate = useNavigate();
     const contextValues = useAppContext();
-    const { showAlert, isLoading, displayAlert } = contextValues;
+    const { showAlert, isLoading, displayAlert, registerUser, user } =
+        contextValues;
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
@@ -28,12 +31,29 @@ function Register() {
     const onSubmit = function (event) {
         event.preventDefault();
         const { name, email, password, isMember } = values;
+        // 首先检查, 这些 value 不为空
         if (!email || !password || (!isMember && !name)) {
             displayAlert();
             return;
         }
-        console.log(values);
+
+        if (isMember) {
+            console.log("already a member");
+        } else {
+            let currentUser = { name, email, password };
+            // 调用从 appContext 中传入的 registerUser method
+            registerUser(currentUser);
+        }
     };
+
+    // we will invoke this one on initial render and every time the user or navigate changes.
+    useEffect(() => {
+        if (user) {
+            setTimeout(() => {
+                navigate("/");
+            }, 3000);
+        }
+    }, [user, navigate]);
 
     return (
         <Wrapper className="full-page">
@@ -67,7 +87,11 @@ function Register() {
                     handleChange={handleChange}
                 />
 
-                <button type="submit" className="btn btn-block">
+                <button
+                    type="submit"
+                    className="btn btn-block"
+                    disabled={isLoading}
+                >
                     submit
                 </button>
 

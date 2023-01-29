@@ -1,11 +1,31 @@
 import React, { useReducer, useContext, createContext } from "react";
+import axios from "axios";
 import reducer from "./reducer";
-import { DISPLAY_ALERT, CLEAR_ALERT } from "./action";
+import {
+    DISPLAY_ALERT,
+    CLEAR_ALERT,
+    REGISTER_USER_BEGIN,
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER_ERROR,
+} from "./action";
+
 const initialState = {
     isLoading: false,
     showAlert: false,
     alertType: "",
     alertText: "",
+    user: localStorage.getItem("user")
+        ? localStorage.getItem("user")
+        : null,
+    token: localStorage.getItem("token")
+        ? localStorage.getItem("token")
+        : null,
+    userLocation: localStorage.getItem("location")
+        ? localStorage.getItem("location")
+        : "",
+    jobLocation: localStorage.getItem("location")
+        ? localStorage.getItem("location")
+        : "",
 };
 
 const AppContext = createContext();
@@ -15,7 +35,7 @@ const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     /* 
-    displayAlert, clearAlert 这两个函数通过调用 dispatch 函数并传递对应的type到reducer function 从而控制 alert 产生与否以及类型以及alterText
+    # displayAlert, clearAlert 这两个函数通过调用 dispatch 函数并传递对应的type到reducer function 从而控制 alert 产生与否以及类型以及alterText
     */
     const displayAlert = () => {
         dispatch({ type: DISPLAY_ALERT });
@@ -31,8 +51,64 @@ const AppProvider = ({ children }) => {
         }, 3000);
     };
 
+    /* 
+    # 用于在 register page 进行用户注册的操作
+    */
+    const registerUser = async (curUser) => {
+        // 无论如何都先 dispatch "REGISTER_USER_BEGIN" 到 reducer
+        dispatch({ type: REGISTER_USER_BEGIN });
+        try {
+            // 尝试从 back end 获取数据
+            const response = await axios.post(
+                "/api/v1/auth/register",
+                curUser
+            );
+            const data = response.data;
+            console.log("Registered, data is: ", data);
+            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            dispatch({
+                type: REGISTER_USER_SUCCESS,
+                payload: {
+                    user: data.user,
+                    token: data.token,
+                    location: data.location,
+                },
+            });
+            addUserToLocalStorage(data);
+            // 最后要清除界面上的 alert 提示
+            clearAlert();
+        } catch (error) {
+            console.log("Register Error, error is: ", error);
+            const errMessage = error.response.data.msg;
+            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            dispatch({
+                type: REGISTER_USER_ERROR,
+                payload: { msg: errMessage },
+            });
+            // 最后要清除界面上的 alert 提示
+            clearAlert();
+        }
+    };
+
+    /* 
+    # 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
+    */
+    const addUserToLocalStorage = ({ user, token, location }) => {
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", token);
+        localStorage.setItem("location", location);
+    };
+
+    const removeUserFromLocalStorage = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("location");
+    };
+
     return (
-        <AppContext.Provider value={{ ...state, displayAlert }}>
+        <AppContext.Provider
+            value={{ ...state, displayAlert, registerUser }}
+        >
             {children}
         </AppContext.Provider>
     );

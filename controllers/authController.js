@@ -31,6 +31,7 @@ const register = async (req, res) => {
             name: newUser.name,
         },
         token,
+        location: newUser.location,
     });
 };
 const login = async (req, res) => {

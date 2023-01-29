@@ -1770,15 +1770,19 @@ app.use(cors());
 -   my preference to remove trailing slash /
 -   restart app
 
+## Section 17: Register User Front-End
+
 #### Register User - Setup
 
 ```js
 appContext.js;
 
 const initialState = {
+    // 新添加的
     user: null,
     token: null,
     userLocation: "",
+    // 原有的
 };
 ```
 
@@ -1922,6 +1926,11 @@ const Register = () => {
 
 #### Local Storage
 
+** 为什么使用?**
+the problem is going to be that if the user refreshes the page, we won't persist those values. 注册成功后会被 navigate to the dashboard, 但一旦我们在这里 refresh page, 数据就会丢失
+
+> https://www.udemy.com/course/mern-stack-course-mongodb-express-react-and-nodejs/learn/lecture/29875782#content
+
 ```js
 appContext.js;
 const addUserToLocalStorage = ({ user, token, location }) => {
@@ -1957,6 +1966,8 @@ const initialState = {
     jobLocation: userLocation || "",
 };
 ```
+
+## Section 18: Login User Server
 
 #### Morgan Package
 
