@@ -8,9 +8,15 @@ import errorHandlerMiddleware from "./middleware/error-handler.js";
 import connectDB from "./db/connect.js";
 import authRouter from "./routes/authRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
+import morgan from "morgan";
 
 // * 将 .env 中定义的变量进行 register
 dotenv.config();
+
+// * 只在 dev 环境下使用 morgan middleware
+if (process.env.NODE_ENV !== "production") {
+    app.use(morgan("dev"));
+}
 
 const app = express();
 app.use(express.json());

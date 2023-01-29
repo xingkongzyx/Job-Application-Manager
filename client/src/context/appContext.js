@@ -9,23 +9,19 @@ import {
     REGISTER_USER_ERROR,
 } from "./action";
 
+const token = localStorage.getItem("token");
+const user = localStorage.getItem("user");
+const userLocation = localStorage.getItem("location");
+
 const initialState = {
     isLoading: false,
     showAlert: false,
     alertType: "",
     alertText: "",
-    user: localStorage.getItem("user")
-        ? localStorage.getItem("user")
-        : null,
-    token: localStorage.getItem("token")
-        ? localStorage.getItem("token")
-        : null,
-    userLocation: localStorage.getItem("location")
-        ? localStorage.getItem("location")
-        : "",
-    jobLocation: localStorage.getItem("location")
-        ? localStorage.getItem("location")
-        : "",
+    user: user ? JSON.parse(user) : null,
+    token: token,
+    userLocation: userLocation || "",
+    jobLocation: userLocation || "",
 };
 
 const AppContext = createContext();
