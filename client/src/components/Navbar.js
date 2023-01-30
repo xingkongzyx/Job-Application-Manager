@@ -1,12 +1,12 @@
-import React from "react";
 import Wrapper from "../assets/wrappers/Navbar";
-
-function Navbar() {
+import { FaHome } from "react-icons/fa";
+const Navbar = () => {
     return (
         <Wrapper>
-            <h4>Navbar</h4>
+            <h4>navbar</h4>
+            <FaHome />
         </Wrapper>
     );
-}
+};
 
 export default Navbar;
