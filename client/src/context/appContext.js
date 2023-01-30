@@ -21,7 +21,7 @@ const initialState = {
     showAlert: false,
     alertType: "",
     alertText: "",
-    user: user ? JSON.parse(user) : null,
+    user: user ? JSON.stringify(user) : null,
     token: token,
     userLocation: userLocation || "",
     jobLocation: userLocation || "",
@@ -47,7 +47,7 @@ const AppProvider = ({ children }) => {
             dispatch({
                 type: CLEAR_ALERT,
             });
-        }, 3000);
+        }, 6000);
     };
 
     /* 
@@ -62,20 +62,18 @@ const AppProvider = ({ children }) => {
                 "/api/v1/auth/register",
                 curUser
             );
-            const data = response.data;
-            console.log("Registered, data is: ", data);
+            const { user, token, location } = response.data;
+            console.log("Registered, data is: ", response.data);
             // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
             dispatch({
                 type: REGISTER_USER_SUCCESS,
                 payload: {
-                    user: data.user,
-                    token: data.token,
-                    location: data.location,
+                    user,
+                    token,
+                    location,
                 },
             });
-            addUserToLocalStorage(data);
-            // 最后要清除界面上的 alert 提示
-            clearAlert();
+            addUserToLocalStorage(response.data);
         } catch (error) {
             console.log("Register Error, error is: ", error);
             const errMessage = error.response.data.msg;
@@ -84,9 +82,9 @@ const AppProvider = ({ children }) => {
                 type: REGISTER_USER_ERROR,
                 payload: { msg: errMessage },
             });
-            // 最后要清除界面上的 alert 提示
-            clearAlert();
         }
+        // 最后要清除界面上的 alert 提示
+        clearAlert();
     };
 
     const loginUser = async (curUser) => {
@@ -98,20 +96,18 @@ const AppProvider = ({ children }) => {
                 "/api/v1/auth/login",
                 curUser
             );
-            const data = response.data;
-            console.log("Logged in, data is: ", data);
+            const { user, token, location } = response.data;
+            console.log("Logged in, data is: ", response.data);
             // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
             dispatch({
                 type: LOGIN_USER_SUCCESS,
                 payload: {
-                    user: data.user,
-                    token: data.token,
-                    location: data.location,
+                    user,
+                    token,
+                    location,
                 },
             });
-            addUserToLocalStorage(data);
-            // 最后要清除界面上的 alert 提示
-            clearAlert();
+            addUserToLocalStorage(response.data);
         } catch (error) {
             console.log("Login Error, error is: ", error);
             const errMessage = error.response.data.msg;
@@ -120,9 +116,9 @@ const AppProvider = ({ children }) => {
                 type: LOGIN_USER_ERROR,
                 payload: { msg: errMessage },
             });
-            // 最后要清除界面上的 alert 提示
-            clearAlert();
         }
+        // 最后要清除界面上的 alert 提示
+        clearAlert();
     };
 
     /* 
@@ -142,7 +138,12 @@ const AppProvider = ({ children }) => {
 
     return (
         <AppContext.Provider
-            value={{ ...state, displayAlert, registerUser, loginUser }}
+            value={{
+                ...state,
+                displayAlert,
+                registerUser,
+                loginUser,
+            }}
         >
             {children}
         </AppContext.Provider>

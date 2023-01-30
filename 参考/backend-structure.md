@@ -1,0 +1,55 @@
+#### 因为后端使用的是 ES6 module, 所以 import 的语法是与前端不同的, 导入 module 时必须要加上 js 后缀
+
+### Auth Controller: register, login, updateUser
+
+-   authRouter
+
+    -   router.route('/register').post(register);
+    -   router.route('/login').post(login);
+
+        -   register 和 login 都是从 req.body 获取传入的 name/email/password, 然后进行 database side 的比对检验, 如果有问题 throw custom error. 如果没有 error, 最后返回
+
+        ```js
+        res.json({
+            token,
+            user: foundUser,
+            location: foundUser.location,
+        });
+        ```
+
+    -   router.route('/updateUser').patch(updateUser);
+
+-   app.use('/api/v1/auth', authRouter);
+
+### Jobs Controller: createJob, deleteJob, getAllJobs, updateJob, showStats
+
+-   jobsRouter
+    -   router.route('/').post(createJob).get(getAllJobs);
+    -   // place before :id, 防止永远无法到达 ":id"
+    -   router.route('/stats').get(showStats);
+    -   router.route('/:id').delete(deleteJob).patch(updateJob);
+-   app.use('/api/v1/jobs', jobsRouter);
+
+### User model, collection name is User
+
+-   contains: name, email, password, lastName, location
+-   对于 password, 我们不希望将他发送到 frontend, 所以添加了 select: false.
+-   添加 UserSchema.pre 确保在注册或者更新用户并保存在数据库之前将 password 进行 hash
+-   添加了 instance method createJWT 对 password 进行 jwt 加密
+-   添加了 instance method validatePassword 对 传入的 password 以及数据库中存储的 password 进行比较，从而判断是否能够正确登录
+
+### Error handling:
+
+```js
+class CustomAPIError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+```
+
+-   And we have BadRequestError, NotFoundError extends CustomAPIError, 并且可以自己定义 error message
+
+> https://kb.objectrocket.com/mongo-db/how-to-add-instance-methods-with-mongoose-236
+
+当点击 submit button, component 内部定义的 onSubmit 启动，首先通过 state values 读取刚刚提交的 name, email, password. 然后经过第一个检查，要确定一定要的 field(email, password) 不为空。然后根据 {Email, password, name} 创建 currentUser。之后根据目前用户在 login 界面 isMember==true, 在 register 界面 isMember==false, 来决定是调用 loginUser func 还是 registerUser func. 这两个 function 并不是在 Register page 定义的，而是在最外层的 AppProvider 中定义的，并通过 context 传入 Register.js 文件. 调用这两个方法是，需要传入上面定义的 currentUser, 因为在 axios.post(backend) 时要同时把 currentUser 传到后端进行存储

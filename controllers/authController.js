@@ -28,7 +28,7 @@ const register = async (req, res) => {
     console.log(bgCyan.yellow.underline("New user registered!"));
     newUser.password = undefined;
     res.status(201).json({
-        newUser,
+        user: newUser,
         token,
         location: newUser.location,
     });
@@ -68,7 +68,7 @@ const login = async (req, res) => {
     foundUser.password = undefined;
     res.status(200).json({
         token,
-        foundUser,
+        user: foundUser,
         location: foundUser.location,
     });
 };

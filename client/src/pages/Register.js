@@ -17,6 +17,7 @@ function Register() {
     const [values, setValues] = useState(initialValues);
     const navigate = useNavigate();
     const contextValues = useAppContext();
+    
     const {
         showAlert,
         isLoading,
@@ -25,6 +26,7 @@ function Register() {
         user,
         loginUser,
     } = contextValues;
+
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
@@ -55,7 +57,9 @@ function Register() {
 
     // we will invoke this one on initial render and every time the user or navigate changes.
     useEffect(() => {
+        console.log("useEffect in register");
         if (user) {
+            console.log("redirect");
             setTimeout(() => {
                 navigate("/");
             }, 3000);

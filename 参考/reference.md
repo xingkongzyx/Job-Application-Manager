@@ -2231,6 +2231,8 @@ const onSubmit = (e) => {
 };
 ```
 
+## Section 20: Nested Pages and Protected Route
+
 #### Nested Pages in React Router 6
 
 #### Dashboard pages
