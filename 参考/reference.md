@@ -2019,6 +2019,8 @@ UserSchema.methods.comparePassword = async function (
 };
 ```
 
+when we were setting up here, the password, we actually went with "select: false".
+
 ```js
 authController.js;
 const login = async (req, res) => {
@@ -2046,6 +2048,8 @@ const login = async (req, res) => {
 ```
 
 -   test in Postman
+
+## Section 19: Login User Front-End
 
 #### Login User - Setup
 

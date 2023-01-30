@@ -65,6 +65,19 @@ UserSchema.methods.createJWT = function () {
     });
 };
 
+/*
+ * During login: Validate if the passed password match with password stored in db
+ */
+UserSchema.methods.validatePassword = async function (
+    candidatePassword
+) {
+    let isMatch = await bcrypt.compare(
+        candidatePassword,
+        this.password
+    );
+    return isMatch;
+};
+
 // "compiled" UserSchema into models using the mongoose.model() method.
 const UserModel = mongoose.model("User", UserSchema);
 export default UserModel;

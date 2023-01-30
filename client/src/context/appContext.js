@@ -7,6 +7,9 @@ import {
     REGISTER_USER_BEGIN,
     REGISTER_USER_SUCCESS,
     REGISTER_USER_ERROR,
+    LOGIN_USER_BEGIN,
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -86,6 +89,42 @@ const AppProvider = ({ children }) => {
         }
     };
 
+    const loginUser = async (curUser) => {
+        // 无论如何都先 dispatch "LOGIN_USER_BEGIN" 到 reducer
+        dispatch({ type: LOGIN_USER_BEGIN });
+        try {
+            // 尝试从 back end 获取数据
+            const response = await axios.post(
+                "/api/v1/auth/login",
+                curUser
+            );
+            const data = response.data;
+            console.log("Logged in, data is: ", data);
+            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            dispatch({
+                type: LOGIN_USER_SUCCESS,
+                payload: {
+                    user: data.user,
+                    token: data.token,
+                    location: data.location,
+                },
+            });
+            addUserToLocalStorage(data);
+            // 最后要清除界面上的 alert 提示
+            clearAlert();
+        } catch (error) {
+            console.log("Login Error, error is: ", error);
+            const errMessage = error.response.data.msg;
+            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            dispatch({
+                type: LOGIN_USER_ERROR,
+                payload: { msg: errMessage },
+            });
+            // 最后要清除界面上的 alert 提示
+            clearAlert();
+        }
+    };
+
     /* 
     # 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
     */
@@ -103,7 +142,7 @@ const AppProvider = ({ children }) => {
 
     return (
         <AppContext.Provider
-            value={{ ...state, displayAlert, registerUser }}
+            value={{ ...state, displayAlert, registerUser, loginUser }}
         >
             {children}
         </AppContext.Provider>

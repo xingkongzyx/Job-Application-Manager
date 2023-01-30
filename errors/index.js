@@ -3,5 +3,6 @@
  */
 import { NotFoundError } from "./not-found.js";
 import { BadRequestError } from "./bad-request.js";
+import { NotAuthenticationError } from "./not-authentication.js";
 
-export { NotFoundError, BadRequestError };
+export { NotFoundError, BadRequestError, NotAuthenticationError };

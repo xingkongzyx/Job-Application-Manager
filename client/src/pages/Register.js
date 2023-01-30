@@ -17,8 +17,14 @@ function Register() {
     const [values, setValues] = useState(initialValues);
     const navigate = useNavigate();
     const contextValues = useAppContext();
-    const { showAlert, isLoading, displayAlert, registerUser, user } =
-        contextValues;
+    const {
+        showAlert,
+        isLoading,
+        displayAlert,
+        registerUser,
+        user,
+        loginUser,
+    } = contextValues;
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
@@ -31,16 +37,17 @@ function Register() {
     const onSubmit = function (event) {
         event.preventDefault();
         const { name, email, password, isMember } = values;
+
         // 首先检查, 这些 value 不为空
         if (!email || !password || (!isMember && !name)) {
             displayAlert();
             return;
         }
+        let currentUser = { name, email, password };
 
         if (isMember) {
-            console.log("already a member");
+            loginUser(currentUser);
         } else {
-            let currentUser = { name, email, password };
             // 调用从 appContext 中传入的 registerUser method
             registerUser(currentUser);
         }
@@ -64,17 +71,17 @@ function Register() {
 
                 {/* name field */}
                 <FormRow
-                    inputType="name"
-                    name="name"
-                    value={values.name}
+                    inputType="email"
+                    name="email"
+                    value={values.email}
                     handleChange={handleChange}
                 />
-                {/* email field, only display when register(means isMember == false) */}
+                {/* name field, only display when register(means isMember == false) */}
                 {!values.isMember && (
                     <FormRow
-                        inputType="email"
-                        name="email"
-                        value={values.email}
+                        inputType="name"
+                        name="name"
+                        value={values.name}
                         handleChange={handleChange}
                     />
                 )}

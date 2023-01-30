@@ -1,6 +1,9 @@
 import User from "../model/User.js";
-import { BadRequestError } from "../errors/index.js";
-import { yellow } from "console-log-colors";
+import {
+    BadRequestError,
+    NotAuthenticationError,
+} from "../errors/index.js";
+import { yellow, green, bgCyan, underline } from "console-log-colors";
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -22,20 +25,52 @@ const register = async (req, res) => {
     const newUser = await User.create(req.body);
     // use the Instance Methods with Mongoose to create json web token based on the password property
     const token = newUser.createJWT();
-    console.log(yellow("New user registered!"));
+    console.log(bgCyan.yellow.underline("New user registered!"));
+    newUser.password = undefined;
     res.status(201).json({
-        user: {
-            email: newUser.email,
-            lastName: newUser.lastName,
-            location: newUser.location,
-            name: newUser.name,
-        },
+        newUser,
         token,
         location: newUser.location,
     });
 };
+
 const login = async (req, res) => {
-    res.send("log in route works");
+    const { email, password } = req.body;
+
+    // if the required fields are empty, throw error directly from server side validation with the help of defined error handlers
+    if (!email || !password) {
+        throw new NotAuthenticationError(
+            "Please provide all values - from server error handler"
+        );
+    }
+    // If the user exists, we will need to validate the password then. But if the user doesn't exist,  we want to send back vague unauthenticated error response.
+    // 使用 "+password" 用于获取 password field。否则默认情况下因为设置了 "select: false", password是无法被获取的
+    let foundUser = await User.findOne({ email }).select("+password");
+    if (!foundUser) {
+        throw new NotAuthenticationError(
+            "No such user in the db - from server error handler"
+        );
+    }
+    const isPasswordMatch = await foundUser.validatePassword(
+        password
+    );
+
+    if (!isPasswordMatch) {
+        throw new NotAuthenticationError(
+            "password not match - from server error handler"
+        );
+    }
+
+    console.log(bgCyan.green.underline("An user logged in!"));
+
+    // After successful validation, we will create the jwt token, and send back that with the response
+    const token = foundUser.createJWT();
+    foundUser.password = undefined;
+    res.status(200).json({
+        token,
+        foundUser,
+        location: foundUser.location,
+    });
 };
 
 const updateUser = async (req, res) => {
