@@ -2667,7 +2667,9 @@ export default SmallSidebar;
 ```
 
 #### Small Sidebar - Toggle
-- 通过使用 appContext 中的 showSidebar, toggleSidebar 控制 small sidebar 的显示与否
+
+-   通过使用 appContext 中的 showSidebar, toggleSidebar 控制 small sidebar 的显示与否
+
 ```js
 SmallSidebar.js;
 
@@ -2822,6 +2824,8 @@ isActive ? 'nav-link active' : 'nav-link'}
 end
 >
 ```
+
+## Section 25: Auth - Server Setup
 
 #### Authenticate User Setup
 

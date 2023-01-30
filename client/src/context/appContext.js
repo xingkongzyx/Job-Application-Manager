@@ -17,13 +17,13 @@ import {
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
-
+console.log(typeof user);
 const initialState = {
     isLoading: false,
     showAlert: false,
     alertType: "",
     alertText: "",
-    user: user ? JSON.stringify(user) : null,
+    user: user ? JSON.parse(user) : null,
     token: token,
     userLocation: userLocation || "",
     jobLocation: userLocation || "",
@@ -159,7 +159,7 @@ const AppProvider = ({ children }) => {
                 registerUser,
                 loginUser,
                 toggleSidebar,
-                logoutUser
+                logoutUser,
             }}
         >
             {children}
