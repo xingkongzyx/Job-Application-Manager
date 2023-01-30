@@ -21,7 +21,7 @@ function App() {
                         </ProtectedRoute>
                     }
                 >
-                    {/* The routes nested inside of the outer one, it will always be relative to that path "/" */}
+                    {/* The routes nested inside of the outer one, it will always be relative to that path "/", 所以像<AllJobs />对应的界面就是 "/all-jobs" */}
                     {/* 
                     使用 index 的作用: once you navigate to the "/", you will actually direct to the "/stats"
                     */}

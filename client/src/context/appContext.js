@@ -10,6 +10,8 @@ import {
     LOGIN_USER_BEGIN,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_ERROR,
+    TOGGLE_SIDEBAR,
+    LOGOUT_USER,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -25,6 +27,7 @@ const initialState = {
     token: token,
     userLocation: userLocation || "",
     jobLocation: userLocation || "",
+    showSidebar: false,
 };
 
 const AppContext = createContext();
@@ -48,6 +51,13 @@ const AppProvider = ({ children }) => {
                 type: CLEAR_ALERT,
             });
         }, 6000);
+    };
+
+    /* 
+    # 用于控制 dashboard 界面的 sidebar 是否显示
+    */
+    const toggleSidebar = () => {
+        dispatch({ type: TOGGLE_SIDEBAR });
     };
 
     /* 
@@ -121,6 +131,11 @@ const AppProvider = ({ children }) => {
         clearAlert();
     };
 
+    const logoutUser = () => {
+        dispatch({ type: LOGOUT_USER });
+        removeUserFromLocalStorage();
+    };
+
     /* 
     # 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
     */
@@ -143,6 +158,8 @@ const AppProvider = ({ children }) => {
                 displayAlert,
                 registerUser,
                 loginUser,
+                toggleSidebar,
+                logoutUser
             }}
         >
             {children}

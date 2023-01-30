@@ -12,6 +12,8 @@ const SharedLayout = () => {
                 <div>
                     <Navbar />
                     <div className="dashboard-page">
+                        {/* This element <Outlet /> will render either <Stats />, <AllJobs />, <AddJob />, oe <Profile />
+                         */}
                         <Outlet />
                     </div>
                 </div>

@@ -2587,6 +2587,8 @@ return (
 );
 ```
 
+## Section 23 Small Sidebar
+
 #### Setup Links
 
 -   create `<b>`utils `</b>`in the `<b>`src `</b>`
@@ -2665,7 +2667,7 @@ export default SmallSidebar;
 ```
 
 #### Small Sidebar - Toggle
-
+- 通过使用 appContext 中的 showSidebar, toggleSidebar 控制 small sidebar 的显示与否
 ```js
 SmallSidebar.js;
 
