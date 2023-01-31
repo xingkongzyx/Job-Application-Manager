@@ -137,7 +137,7 @@ const AppProvider = ({ children }) => {
     };
 
     /* 
-    # 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
+    # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
     */
     const addUserToLocalStorage = ({ user, token, location }) => {
         localStorage.setItem("user", JSON.stringify(user));
