@@ -53,3 +53,16 @@ class CustomAPIError extends Error {
 > https://kb.objectrocket.com/mongo-db/how-to-add-instance-methods-with-mongoose-236
 
 当点击 submit button, component 内部定义的 onSubmit 启动，首先通过 state values 读取刚刚提交的 name, email, password. 然后经过第一个检查，要确定一定要的 field(email, password) 不为空。然后根据 {Email, password, name} 创建 currentUser。之后根据目前用户在 login 界面 isMember==true, 在 register 界面 isMember==false, 来决定是调用 loginUser func 还是 registerUser func. 这两个 function 并不是在 Register page 定义的，而是在最外层的 AppProvider 中定义的，并通过 context 传入 Register.js 文件. 调用这两个方法是，需要传入上面定义的 currentUser, 因为在 axios.post(backend) 时要同时把 currentUser 传到后端进行存储
+
+How do JSON Web Tokens work?
+In authentication, when the user successfully logs in using their credentials, a JSON Web Token will be returned. Since tokens are credentials, great care must be taken to prevent security issues. In general, you should not keep tokens longer than required.
+
+You also should not store sensitive session data in browser storage due to lack of security.
+
+Whenever the user wants to access a protected route or resource, the user agent should send the JWT, typically in the Authorization header using the Bearer schema. The content of the header should look like the following:
+
+Authorization: Bearer <token>
+This can be, in certain cases, a stateless authorization mechanism. The server's protected routes will check for a valid JWT in the Authorization header, and if it's present, the user will be allowed to access protected resources. If the JWT contains the necessary data, the need to query the database for certain operations may be reduced, though this may not always be the case.
+? https://jwt.io/introduction
+
+from the front, and we'll have to implement some code grab token from our state, and then we'll set up a request that will go to our server. And we will check for authorization header on the server, if that header is present, if the token is still valid. We can access and modify the resources, if not, it will throw the authorization error

@@ -2831,6 +2831,8 @@ end
 
 -   create auth.js in `<b>`middleware `</b>`
 
+-   for certain routes before we can access the route, such as updateUser, there's going to be a middleware that checks for that token. So if the token is not valid or it's not present, then we'll send back the error.
+
 ```js
 const auth = async (req, res, next) => {
     console.log("authenticate user");
@@ -2957,6 +2959,8 @@ const auth = async (req, res, next) => {
 export default auth;
 ```
 
+## section 26 update user - server
+
 #### Update User
 
 ```js
@@ -2992,6 +2996,18 @@ const updateUser = async (req, res) => {
 
 -   user.save() vs User.findOneAndUpdate
 
+之前的 User.js
+
+```js
+UserSchema.pre("save", async function () {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    this.password = hashedPassword;
+});
+```
+会出下面的错误 "msg": "Illegal arguments: undefined, string"
+因为 password在设置时是 "select:false", 所以无法访问。使用 modifiedPaths 以及 isModified 进行更改
+
 ```js
 User.js;
 
@@ -3004,6 +3020,8 @@ UserSchema.pre("save", async function () {
     // this.password = await bcrypt.hash(this.password, salt)
 });
 ```
+
+## Section 27: Profile Page
 
 #### Profile Page
 

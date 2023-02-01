@@ -136,6 +136,10 @@ const AppProvider = ({ children }) => {
         removeUserFromLocalStorage();
     };
 
+    const updateUser = async (curUser) => {
+        console.log(curUser);
+    };
+
     /* 
     # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
     */
@@ -160,6 +164,7 @@ const AppProvider = ({ children }) => {
                 loginUser,
                 toggleSidebar,
                 logoutUser,
+                updateUser,
             }}
         >
             {children}

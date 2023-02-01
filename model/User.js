@@ -50,6 +50,8 @@ const UserSchema = new mongoose.Schema({
 ! 但是在调用 findOneAndUpdate 时不会进行 trigger
 */
 UserSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(this.password, salt);
     this.password = hashedPassword;

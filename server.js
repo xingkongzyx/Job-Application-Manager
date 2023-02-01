@@ -5,10 +5,13 @@ import dotenv from "dotenv";
 
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import authenticateUser from "./middleware/auth.js";
+
 import connectDB from "./db/connect.js";
 import authRouter from "./routes/authRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
 import morgan from "morgan";
+
 const app = express();
 app.use(express.json());
 // * 将 .env 中定义的变量进行 register
@@ -20,7 +23,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobRouter);
+
+// 对于所有的 job route, 使用 authenticateUser middleware 确保只有在用户得到验证的情况下才能访问这个 route
+app.use("/api/v1/jobs", authenticateUser, jobRouter);
 
 app.get("/", (req, res) => {
     res.send("Welcome!");
