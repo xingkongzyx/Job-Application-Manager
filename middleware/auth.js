@@ -6,7 +6,7 @@ const authenticateUser = async (req, res, next) => {
     # 针对某些 route 进行 user authorization, 如果发送的 request 的 headers 中没有包含正确的 token, 则不允许对某些 routes 进行 access
     */
     let token = req.headers.authorization;
-    // token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Q3MWRlYzg5YThmMGE4YzUzOTc5ZDEiLCJpYXQiOjE2NzUxOTg5MDgsImV4cCI6MTY3NTI4NTMwOH0.cx-MNvJL7ew9tuzCCnbYtE9UQzhQTo5q83bnMam2iTo"
+    // token: "Bearer ****"
 
     if (!token || !token.startsWith("Bearer")) {
         throw new NotAuthenticationError(
@@ -15,7 +15,6 @@ const authenticateUser = async (req, res, next) => {
     }
     // 提取 "Bearer **" 后面 "**" 部分的真正想要进行验证部分的数据
     let tokenData = token.split(" ")[1];
-    console.log(tokenData);
     try {
         const payload = jwt.verify(tokenData, process.env.JWT_SECRET);
         /* 

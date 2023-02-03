@@ -3005,8 +3005,9 @@ UserSchema.pre("save", async function () {
     this.password = hashedPassword;
 });
 ```
+
 会出下面的错误 "msg": "Illegal arguments: undefined, string"
-因为 password在设置时是 "select:false", 所以无法访问。使用 modifiedPaths 以及 isModified 进行更改
+因为 password 在设置时是 "select:false", 所以无法访问。使用 modifiedPaths 以及 isModified 进行更改
 
 ```js
 User.js;
@@ -3116,6 +3117,8 @@ const Profile = () => {
 
 export default Profile;
 ```
+
+## Section 28: Axios setup
 
 #### Bearer Token - Manual Approach
 

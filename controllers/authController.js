@@ -80,9 +80,10 @@ const updateUser = async (req, res) => {
             "Please provide all values when updating profile - from server error handler"
         );
     }
-    // 在 authorize user 过程中添加了 "req.user = { userId: payload.userId }"
+    // 在 authorize user(详情见 /middleware/auth.js) 过程中添加了 "req.user = { userId: payload.userId }"
     const userId = req.user.userId;
 
+    // * 根据 userId 寻找对应的 user 并对他的各个 field 进行更新
     const updatedUser = await User.findOne({ _id: userId });
     updatedUser.email = email;
     updatedUser.name = name;
@@ -91,7 +92,7 @@ const updateUser = async (req, res) => {
 
     await updatedUser.save();
 
-    // * 这一步骤是 optional，我们使用的目的是为了重新设置 jwt 的 expire time
+    // * 这一步骤是 optional, 我们使用的目的是为了重新设置 jwt 的 expire time
     const token = updatedUser.createJWT();
     res.status(200).json({
         token,

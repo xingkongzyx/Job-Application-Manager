@@ -12,12 +12,15 @@ import {
     LOGIN_USER_ERROR,
     TOGGLE_SIDEBAR,
     LOGOUT_USER,
+    UPDATE_USER_BEGIN,
+    UPDATE_USER_ERROR,
+    UPDATE_USER_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
-console.log(typeof user);
+
 const initialState = {
     isLoading: false,
     showAlert: false,
@@ -35,6 +38,45 @@ const AppContext = createContext();
 // children 就是整个的 <App />, 我们将provider套在外面从而实现数据共享
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    // # create a custom axios instance
+    const axiosInstance = axios.create({
+        baseURL: "/api/v1",
+    });
+
+    // Add a request interceptor
+    axiosInstance.interceptors.request.use(
+        (config) => {
+            // # Do something before request is sent
+            // We will set up the Authorization header in the request to the server
+            config.headers["Authorization"] = `Bearer ${state.token}`;
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
+
+    // # 使用interceptor的意义在于希望捕捉到不同类型的 error。因为没有填写必要项与发送request时没有附带 header 是不同的错误，使用 response interceptor 允许我们捕捉到这种不同的错误
+    // Add a response interceptor
+    axiosInstance.interceptors.response.use(
+        (response) => {
+            // * Any status code that lie within the range of 2xx cause this function to trigger
+            // Do something with response data
+            return response;
+        },
+        (error) => {
+            // * Any status codes that falls outside the range of 2xx cause this function to trigger
+            // Do something with response error
+            console.log(error.response);
+            if (error.response.status === 401) {
+                // > 遇到 401 error 意味着此时 token 失效了，我们不能够允许 user 在 token 失效的情况下 update user profile. 所以选择登出 user
+                // console.log("AUTH ERROR");
+                logoutUser();
+            }
+            return Promise.reject(error);
+        }
+    );
 
     /* 
     # displayAlert, clearAlert 这两个函数通过调用 dispatch 函数并传递对应的type到reducer function 从而控制 alert 产生与否以及类型以及alterText
@@ -137,7 +179,33 @@ const AppProvider = ({ children }) => {
     };
 
     const updateUser = async (curUser) => {
-        console.log(curUser);
+        // * 无论如何，此时开始了 update user profile 的操作，所以要显示 isLoading 标识
+        dispatch({ type: UPDATE_USER_BEGIN });
+        try {
+            const { data } = await axiosInstance.patch(
+                "/auth/updateUser",
+                curUser
+            );
+            const { user, location, token } = data;
+            console.log("User profile updated, data is: ", data);
+            dispatch({
+                type: UPDATE_USER_SUCCESS,
+                payload: { user, token, location },
+            });
+
+            addUserToLocalStorage({ user, location, token });
+        } catch (error) {
+            console.log("User profile error, error is: ", error);
+            // 因为 displayAlert 有延迟时间，所以在我们因为 token 过期而被登出的情况下，在 login 界面会显示 error message, 我们不希望显示，所以使用下面的判断，使得在出现 authentication 过期的错误时，只进行 logout 操作而不进行 dispatch 这个会导致 error message 产生的操作
+            if (error.response.status !== 401) {
+                dispatch({
+                    type: UPDATE_USER_ERROR,
+                    payload: { msg: error.response.data.msg },
+                });
+            }
+        }
+
+        clearAlert();
     };
 
     /* 
