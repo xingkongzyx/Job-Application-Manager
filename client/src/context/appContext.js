@@ -31,6 +31,15 @@ const initialState = {
     userLocation: userLocation || "",
     jobLocation: userLocation || "",
     showSidebar: false,
+    // * 很重要的 property, 这个属性用于决定在 "Add Job" 界面是显示 "Edit Job" 还是 "Add job"
+    isEditing: false,
+    editJobId: "",
+    position: "",
+    company: "",
+    jobTypeOptions: ["full-time", "part-time", "internship"],
+    jobType: "full-time",
+    statusOptions: ["Interviewing", "Applied", "Declined"],
+    status: "Applied",
 };
 
 const AppContext = createContext();
