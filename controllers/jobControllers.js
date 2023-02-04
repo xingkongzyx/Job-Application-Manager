@@ -23,7 +23,9 @@ const deleteJob = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
-    res.send("getAllJobs route works");
+    // 根据 userId 寻找当前用户创造的所有 jobs
+    const jobs = await Job.find({ createdBy: req.user.userId });
+    res.send({ jobs, numOfJobs: jobs.length, numOfPages: 1 });
 };
 
 const updateJob = async (req, res) => {

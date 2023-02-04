@@ -20,6 +20,8 @@ import {
     CREATE_JOB_BEGIN,
     CREATE_JOB_SUCCESS,
     CREATE_JOB_ERROR,
+    GET_JOBS_BEGIN,
+    GET_JOBS_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -45,6 +47,14 @@ const initialState = {
     jobType: "full-time",
     statusOptions: ["Interviewing", "Applied", "Declined"],
     status: "Applied",
+    // 记录从后端获取的当前用户创建的 job applications
+    jobs: [],
+    // 记录从后端获取的当前用户创建的 job applications的数目
+    numOfJobs: 0,
+    // 记录从后端获取的当前用户创建的 job applications 总共会有多少页进行显示
+    numOfPages: 1,
+    // 记录从后端获取的当前用户创建的 job applications 目前应该显示第几页
+    page: 1,
 };
 
 const AppContext = createContext();
@@ -62,7 +72,7 @@ const AppProvider = ({ children }) => {
     axiosInstance.interceptors.request.use(
         (config) => {
             // # Do something before request is sent
-            // We will set up the Authorization header on the request to the server
+            // # 像后端的所有 job routes 以及 update profile route 都需要发送的 req.headers 包含 jwt token, 所以在这里就添加 token, 注意这里的 token 是来自于 state data 而不是 localStorage
             config.headers["Authorization"] = `Bearer ${state.token}`;
             return config;
         },
@@ -265,6 +275,24 @@ const AppProvider = ({ children }) => {
                     payload: { msg: error.response.data.msg },
                 });
             }
+        }
+        clearAlert();
+    };
+
+    // # 用于获得当前用户所创建过的所有 Jobs
+    const getJobs = async () => {
+        let url = `/jobs`;
+        dispatch({ type: GET_JOBS_BEGIN });
+        try {
+            const { data } = await axiosInstance.get(url);
+            const { jobs, numOfJobs, numOfPages } = data;
+            dispatch({
+                type: GET_JOBS_SUCCESS,
+                payload: { jobs, numOfJobs, numOfPages },
+            });
+        } catch (error) {
+            console.log(error);
+            // logoutUser();
         }
         clearAlert();
     };

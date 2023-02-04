@@ -17,11 +17,14 @@ import {
     CREATE_JOB_BEGIN,
     CREATE_JOB_SUCCESS,
     CREATE_JOB_ERROR,
+    GET_JOBS_BEGIN,
+    GET_JOBS_SUCCESS,
 } from "./action";
 import { initialState } from "./appContext";
 
 const reducer = (state, action) => {
     switch (action.type) {
+        // * 在前端的所有界面有 error 出现时会显示在头部(例如required value 没有填写或者填写的不符合要求)
         case DISPLAY_ALERT:
             return {
                 ...state,
@@ -36,6 +39,8 @@ const reducer = (state, action) => {
                 alertText: "",
                 showAlert: false,
             };
+
+        // * 用于前端的 Register component 引起的 state data change(点击 Submit button)
         case REGISTER_USER_BEGIN:
             return { ...state, isLoading: true };
         case REGISTER_USER_SUCCESS:
@@ -59,6 +64,8 @@ const reducer = (state, action) => {
                 alertType: "danger",
                 alertText: action.payload.msg,
             };
+
+        // * 用于前端的 Register component 引起的 state data change(点击 Submit button)
         case LOGIN_USER_BEGIN:
             return {
                 ...state,
@@ -84,6 +91,8 @@ const reducer = (state, action) => {
                 alertType: "danger",
                 alertText: action.payload.msg,
             };
+
+        // * 用于前端的 Navbar 的显示以及隐藏(在 /components/Navbar 进行使用)
         case TOGGLE_SIDEBAR:
             return {
                 ...state,
@@ -98,6 +107,8 @@ const reducer = (state, action) => {
                 userLocation: "",
                 jobLocation: "",
             };
+
+        // * 用于前端的 Profile component 引起的 state data change(点击 Save changes button)
         case UPDATE_USER_BEGIN:
             return { ...state, isLoading: true };
         case UPDATE_USER_ERROR:
@@ -120,11 +131,14 @@ const reducer = (state, action) => {
                 alertType: "success",
                 alertText: "User Profile Updated!",
             };
+
+        // * 用于前端的 AddJob component 引起的 state data change(针对于在其中各个 input 进行输入时的 input value 变化)
         case HANDLE_JOB_CHANGE:
             return {
                 ...state,
                 [action.payload.name]: action.payload.value,
             };
+        // * 用于前端的 AddJob component 引起的 state data change(针对于点击 Reset button)
         case CLEAR_JOB_VALUES:
             const initialJobValues = {
                 isEditing: false,
@@ -137,6 +151,7 @@ const reducer = (state, action) => {
             };
             return { ...state, ...initialJobValues };
 
+        // * 用于前端的 AddJob component 引起的 state data change(点击 submit button)
         case CREATE_JOB_BEGIN:
             return { ...state, isLoading: true };
 
@@ -158,6 +173,17 @@ const reducer = (state, action) => {
                 alertText: action.payload.msg,
             };
 
+        // * 用于前端的 AllJobs component 引起的 state data change
+        case GET_JOBS_BEGIN:
+            return { ...state, isLoading: true, showAlert: false };
+        case GET_JOBS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                jobs: action.payload.jobs,
+                numOfJobs: action.payload.numOfJobs,
+                numOfPages: action.payload.numOfPages,
+            };
         default:
             throw new Error("No such action type", action.type);
     }

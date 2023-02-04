@@ -3812,11 +3812,13 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
 ```
+
+## Section 33: Get All Jobs - Front-End
 
 #### Jobs State Values
 
@@ -3825,7 +3827,7 @@ appContext.js;
 
 const initialState = {
     jobs: [],
-    totalJobs: 0,
+    numOfJobs: 0,
     numOfPages: 1,
     page: 1,
 };
@@ -3850,12 +3852,12 @@ const getJobs = async () => {
   dispatch({ type: GET_JOBS_BEGIN })
   try {
     const { data } = await authFetch(url)
-    const { jobs, totalJobs, numOfPages } = data
+    const { jobs, numOfJobs, numOfPages } = data
     dispatch({
       type: GET_JOBS_SUCCESS,
       payload: {
         jobs,
-        totalJobs,
+        numOfJobs,
         numOfPages,
       },
     })
@@ -3885,7 +3887,7 @@ if (action.type === GET_JOBS_SUCCESS) {
         ...state,
         isLoading: false,
         jobs: action.payload.jobs,
-        totalJobs: action.payload.totalJobs,
+        numOfJobs: action.payload.numOfJobs,
         numOfPages: action.payload.numOfPages,
     };
 }
@@ -3924,7 +3926,7 @@ import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
 
 const JobsContainer = () => {
-    const { getJobs, jobs, isLoading, page, totalJobs } =
+    const { getJobs, jobs, isLoading, page, numOfJobs } =
         useAppContext();
     useEffect(() => {
         getJobs();
@@ -3943,7 +3945,7 @@ const JobsContainer = () => {
     return (
         <Wrapper>
             <h5>
-                {totalJobs} job{jobs.length > 1 && "s"} found
+                {numOfJobs} job{jobs.length > 1 && "s"} found
             </h5>
             <div className="jobs">
                 {jobs.map((job) => {
@@ -4917,7 +4919,7 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -4948,7 +4950,7 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -4981,7 +4983,7 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -5028,7 +5030,7 @@ const getAllJobs = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -5246,12 +5248,12 @@ const getJobs = async () => {
     dispatch({ type: GET_JOBS_BEGIN });
     try {
         const { data } = await authFetch(url);
-        const { jobs, totalJobs, numOfPages } = data;
+        const { jobs, numOfJobs, numOfPages } = data;
         dispatch({
             type: GET_JOBS_SUCCESS,
             payload: {
                 jobs,
-                totalJobs,
+                numOfJobs,
                 numOfPages,
             },
         });
@@ -5271,7 +5273,7 @@ const JobsContainer = () => {
     jobs,
     isLoading,
     page,
-    totalJobs,
+    numOfJobs,
     search,
     searchStatus,
     searchType,
@@ -5318,7 +5320,7 @@ const getAllJobs = async (req, res) => {
         result = result.sort("-position");
     }
 
-    const totalJobs = await result;
+    const numOfJobs = await result;
 
     // setup pagination
     const limit = 10;
@@ -5330,7 +5332,7 @@ const getAllJobs = async (req, res) => {
     const jobs = await result;
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -5380,7 +5382,7 @@ const getAllJobs = async (req, res) => {
     const jobs = await result;
     res.status(StatusCodes.OK).json({
         jobs,
-        totalJobs: jobs.length,
+        numOfJobs: jobs.length,
         numOfPages: 1,
     });
 };
@@ -5429,10 +5431,10 @@ const getAllJobs = async (req, res) => {
 
     const jobs = await result;
 
-    const totalJobs = await Job.countDocuments(queryObject);
-    const numOfPages = Math.ceil(totalJobs / limit);
+    const numOfJobs = await Job.countDocuments(queryObject);
+    const numOfPages = Math.ceil(numOfJobs / limit);
 
-    res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
+    res.status(StatusCodes.OK).json({ jobs, numOfJobs, numOfPages });
 };
 ```
 
@@ -5450,7 +5452,7 @@ const { numOfPages } = useAppContext();
 return (
     <Wrapper>
         <h5>
-            {totalJobs} job{jobs.length > 1 && "s"} found
+            {numOfJobs} job{jobs.length > 1 && "s"} found
         </h5>
         <div className="jobs">
             {jobs.map((job) => {
