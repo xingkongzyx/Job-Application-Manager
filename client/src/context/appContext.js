@@ -15,6 +15,11 @@ import {
     UPDATE_USER_BEGIN,
     UPDATE_USER_ERROR,
     UPDATE_USER_SUCCESS,
+    HANDLE_JOB_CHANGE,
+    CLEAR_JOB_VALUES,
+    CREATE_JOB_BEGIN,
+    CREATE_JOB_SUCCESS,
+    CREATE_JOB_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -57,7 +62,7 @@ const AppProvider = ({ children }) => {
     axiosInstance.interceptors.request.use(
         (config) => {
             // # Do something before request is sent
-            // We will set up the Authorization header in the request to the server
+            // We will set up the Authorization header on the request to the server
             config.headers["Authorization"] = `Bearer ${state.token}`;
             return config;
         },
@@ -66,7 +71,7 @@ const AppProvider = ({ children }) => {
         }
     );
 
-    // # 使用interceptor的意义在于希望捕捉到不同类型的 error。因为没有填写必要项与发送request时没有附带 header 是不同的错误，使用 response interceptor 允许我们捕捉到这种不同的错误
+    // # 使用interceptor的意义在于希望捕捉到不同类型的 error。因为没有填写必要项与发送request时没有附带 header 是不同的错误, 使用 response interceptor 允许我们捕捉到这种不同的错误
     // Add a response interceptor
     axiosInstance.interceptors.response.use(
         (response) => {
@@ -77,9 +82,8 @@ const AppProvider = ({ children }) => {
         (error) => {
             // * Any status codes that falls outside the range of 2xx cause this function to trigger
             // Do something with response error
-            console.log(error.response);
             if (error.response.status === 401) {
-                // > 遇到 401 error 意味着此时 token 失效了，我们不能够允许 user 在 token 失效的情况下 update user profile. 所以选择登出 user
+                // > 遇到 401 error 意味着此时 token 失效了(可能是过期或者被手动移除), 我们不能够允许 user 在 token 失效的情况下 update user profile. 所以选择登出 user
                 // console.log("AUTH ERROR");
                 logoutUser();
             }
@@ -88,7 +92,7 @@ const AppProvider = ({ children }) => {
     );
 
     /* 
-    # displayAlert, clearAlert 这两个函数通过调用 dispatch 函数并传递对应的type到reducer function 从而控制 alert 产生与否以及类型以及alterText
+    # displayAlert, clearAlert 这两个函数通过调用 dispatch 函数并传递对应的 type 到 reducer function 从而控制 alert 产生与否以及类型以及alterText
     */
     const displayAlert = () => {
         dispatch({ type: DISPLAY_ALERT });
@@ -115,17 +119,17 @@ const AppProvider = ({ children }) => {
     # 用于在 register page 进行用户注册的操作
     */
     const registerUser = async (curUser) => {
-        // 无论如何都先 dispatch "REGISTER_USER_BEGIN" 到 reducer
+        // * 无论如何都先 dispatch "REGISTER_USER_BEGIN" 到 reducer
         dispatch({ type: REGISTER_USER_BEGIN });
         try {
-            // 尝试从 back end 获取数据
+            // * 尝试从 back end 获取数据
             const response = await axios.post(
                 "/api/v1/auth/register",
                 curUser
             );
             const { user, token, location } = response.data;
             console.log("Registered, data is: ", response.data);
-            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            // * 通过reducer更新全局的 states 变量, 从而更新前端界面, 例如 alter 位置上显示什么
             dispatch({
                 type: REGISTER_USER_SUCCESS,
                 payload: {
@@ -138,28 +142,28 @@ const AppProvider = ({ children }) => {
         } catch (error) {
             console.log("Register Error, error is: ", error);
             const errMessage = error.response.data.msg;
-            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            // * 通过reducer更新全局的 states 变量, 从而更新前端界面, 例如 alter 位置上显示什么
             dispatch({
                 type: REGISTER_USER_ERROR,
                 payload: { msg: errMessage },
             });
         }
-        // 最后要清除界面上的 alert 提示
+        // * 最后要清除界面上的 alert 提示
         clearAlert();
     };
 
     const loginUser = async (curUser) => {
-        // 无论如何都先 dispatch "LOGIN_USER_BEGIN" 到 reducer
+        // 只要 invoke 了这个 function, 那么无论如何都先 *  到 reducer
         dispatch({ type: LOGIN_USER_BEGIN });
         try {
-            // 尝试从 back end 获取数据
+            // * 尝试从 back end 获取数据
             const response = await axios.post(
                 "/api/v1/auth/login",
                 curUser
             );
             const { user, token, location } = response.data;
             console.log("Logged in, data is: ", response.data);
-            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            // * 通过reducer更新全局的 states 变量, 从而更新前端界面, 例如 alter 位置上显示什么
             dispatch({
                 type: LOGIN_USER_SUCCESS,
                 payload: {
@@ -172,7 +176,7 @@ const AppProvider = ({ children }) => {
         } catch (error) {
             console.log("Login Error, error is: ", error);
             const errMessage = error.response.data.msg;
-            // 通过reducer更新全局的 states 变量，从而更新前端界面，例如 alter 位置上显示什么
+            // 通过reducer更新全局的 states 变量, 从而更新前端界面, 例如 alter 位置上显示什么
             dispatch({
                 type: LOGIN_USER_ERROR,
                 payload: { msg: errMessage },
@@ -188,7 +192,7 @@ const AppProvider = ({ children }) => {
     };
 
     const updateUser = async (curUser) => {
-        // * 无论如何，此时开始了 update user profile 的操作，所以要显示 isLoading 标识
+        // * 无论如何, 此时开始了 update user profile 的操作, 所以要显示 isLoading 标识
         dispatch({ type: UPDATE_USER_BEGIN });
         try {
             const { data } = await axiosInstance.patch(
@@ -205,7 +209,7 @@ const AppProvider = ({ children }) => {
             addUserToLocalStorage({ user, location, token });
         } catch (error) {
             console.log("User profile error, error is: ", error);
-            // 因为 displayAlert 有延迟时间，所以在我们因为 token 过期而被登出的情况下，在 login 界面会显示 error message, 我们不希望显示，所以使用下面的判断，使得在出现 authentication 过期的错误时，只进行 logout 操作而不进行 dispatch 这个会导致 error message 产生的操作
+            // * 因为 displayAlert 有延迟时间, 所以在我们因为 token 过期而被登出的情况下, 在 login 界面会显示 error message, 我们不希望显示, 所以使用下面的判断, 使得在出现 authentication 过期的错误时, 只进行 logout 操作而不进行这个会导致 error message 产生的 dispatch 操作
             if (error.response.status !== 401) {
                 dispatch({
                     type: UPDATE_USER_ERROR,
@@ -214,6 +218,54 @@ const AppProvider = ({ children }) => {
             }
         }
 
+        clearAlert();
+    };
+
+    const handleJobChange = (name, value) => {
+        dispatch({
+            type: HANDLE_JOB_CHANGE,
+            payload: { name, value },
+        });
+    };
+
+    /* 
+    # 在 addJob 界面当用户点击 "reset" 按钮时会调用的方法，用于 reset 所有以及填写的值
+    */
+    const clearJobValues = () => {
+        dispatch({
+            type: CLEAR_JOB_VALUES,
+        });
+    };
+
+    const createJob = async () => {
+        dispatch({ type: CREATE_JOB_BEGIN });
+        const { status, company, position, jobType, jobLocation } =
+            state;
+        try {
+            dispatch({
+                type: CREATE_JOB_BEGIN,
+            });
+            await axiosInstance.post("/jobs", {
+                status,
+                company,
+                position,
+                jobType,
+                jobLocation,
+            });
+            dispatch({
+                type: CREATE_JOB_SUCCESS,
+            });
+
+            dispatch({ type: CLEAR_JOB_VALUES });
+        } catch (error) {
+            // * 因为 displayAlert 有延迟时间, 所以在我们因为 token 过期而被登出的情况下, 在 login 界面会显示 error message, 我们不希望显示, 所以使用下面的判断, 使得在出现 authentication 过期的错误时, 只进行 logout 操作而不进行这个会导致 error message 产生的 dispatch 操作
+            if (error.response.status !== 401) {
+                dispatch({
+                    type: CREATE_JOB_ERROR,
+                    payload: { msg: error.response.data.msg },
+                });
+            }
+        }
         clearAlert();
     };
 
@@ -242,6 +294,9 @@ const AppProvider = ({ children }) => {
                 toggleSidebar,
                 logoutUser,
                 updateUser,
+                handleJobChange,
+                clearJobValues,
+                createJob,
             }}
         >
             {children}

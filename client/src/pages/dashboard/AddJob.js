@@ -1,6 +1,7 @@
-import { FormRow, Alert } from "../../components";
+import { FormRow, Alert, FormRowSelect } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
+
 const AddJob = () => {
     const {
         isEditing,
@@ -13,23 +14,32 @@ const AddJob = () => {
         jobTypeOptions,
         status,
         statusOptions,
+        handleJobChange,
+        clearJobValues,
+        createJob,
     } = useAppContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // * 这三个在表格中都是一定要的 values, 像底下的 status 和 Job Type 都是 dropdown 类型的input, 会有默认值
-        if (!position || !company || !jobLocation) {
-            displayAlert();
+        // * 这三个 values 在表格中都是一定要填写的, 像底下的 status 和 Job Type 都是 dropdown 类型的input, 会有默认值
+        // if (!position || !company || !jobLocation) {
+        //     displayAlert();
+        //     return;
+        // }
+
+        // 如果处于 edit 状态, 不进行 create job 的操作
+
+        if (isEditing) {
             return;
         }
-
+        createJob();
         console.log("user created");
     };
 
     const handleJobInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        console.log(`${name}:${value}`);
+        handleJobChange(name, value);
     };
 
     return (
@@ -38,8 +48,8 @@ const AddJob = () => {
                 <h3>{isEditing ? "edit job" : "add job"} </h3>
                 {showAlert && <Alert />}
 
-                {/* position cell */}
                 <div className="form-center">
+                    {/* position cell */}
                     <FormRow
                         inputType="text"
                         name="position"
@@ -63,62 +73,22 @@ const AddJob = () => {
                     />
 
                     {/* job type dropdown */}
-                    <div className="form-row">
-                        <label
-                            htmlFor="jobType"
-                            className="form-label"
-                        >
-                            Job Type
-                        </label>
-
-                        <select
-                            name="jobType"
-                            value={jobType}
-                            onChange={handleJobInput}
-                            className="form-select"
-                        >
-                            {jobTypeOptions.map(
-                                (itemValue, index) => {
-                                    return (
-                                        <option
-                                            key={index}
-                                            value={itemValue}
-                                        >
-                                            {itemValue}
-                                        </option>
-                                    );
-                                }
-                            )}
-                        </select>
-                    </div>
+                    <FormRowSelect
+                        name="jobType"
+                        labelText="Job Type"
+                        options={jobTypeOptions}
+                        handleChange={handleJobInput}
+                        value={jobType}
+                    />
 
                     {/* job status dropdown */}
-                    <div className="form-row">
-                        <label
-                            htmlFor="jobType"
-                            className="form-label"
-                        >
-                            Application Status
-                        </label>
-
-                        <select
-                            name="status"
-                            value={status}
-                            onChange={handleJobInput}
-                            className="form-select"
-                        >
-                            {statusOptions.map((itemValue, index) => {
-                                return (
-                                    <option
-                                        key={index}
-                                        value={itemValue}
-                                    >
-                                        {itemValue}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
+                    <FormRowSelect
+                        name="status"
+                        labelText="Application Status"
+                        options={statusOptions}
+                        handleChange={handleJobInput}
+                        value={status}
+                    />
 
                     {/* submit button */}
                     <div className="btn-container">
@@ -128,6 +98,15 @@ const AddJob = () => {
                             onClick={handleSubmit}
                         >
                             Save
+                        </button>
+                        <button
+                            className="btn btn-block clear-btn"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                clearJobValues();
+                            }}
+                        >
+                            Reset
                         </button>
                     </div>
                 </div>
