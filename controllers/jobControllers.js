@@ -7,7 +7,7 @@ const createJob = async (req, res) => {
     // 检查 db required 的两个property是否有缺失
     if (!position || !company) {
         throw new BadRequestError(
-            "Please Provide required position and company values"
+            "Please Provide required position and company values when create"
         );
     }
     // req.user.userId 是来自于 auth middle 中的关于 req.userId 的设置
@@ -29,7 +29,35 @@ const getAllJobs = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-    res.send("updateJob route works");
+    // * url: /api/v1/jobs/:id
+    // * 从 url 获取当前正在修改的 job 的 Id
+    const jobId = req.params.id;
+    const { company, position } = req.body;
+
+    // * 这两个 value 是 required，必须在前端进行提供
+    if (!company || !position) {
+        throw new BadRequestError(
+            "Please provide position and company values when update"
+        );
+    }
+
+    const foundJob = await Job.findOne({ _id: jobId });
+    if (!foundJob) {
+        console.log("asdasdsa");
+        throw new NotFoundError("Can not find job with id: ", jobId);
+    }
+    console.log(foundJob);
+    // * 根据 jobId 寻找对应的 job 并根据 req.body 中的 value 进行更新
+    const updatedJob = await Job.findOneAndUpdate(
+        { _id: jobId },
+        req.body,
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
+
+    res.status(200).json({ updatedJob });
 };
 
 const showStats = async (req, res) => {
