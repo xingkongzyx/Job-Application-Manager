@@ -6,6 +6,10 @@ import BigSidebar from "./BigSidebar";
 import Navbar from "./Navbar";
 import NavLinks from "./NavLinks";
 import FormRowSelect from "./FormRowSelect";
+import JobCard from "./JobCard";
+import SearchContainer from "./SearchContainer";
+import JobsContainer from "./JobsContainer";
+import JobCardInfo from "./JobCardInfo";
 
 export {
     NavLinks,
@@ -16,4 +20,8 @@ export {
     BigSidebar,
     Navbar,
     FormRowSelect,
+    JobsContainer,
+    SearchContainer,
+    JobCard,
+    JobCardInfo,
 };

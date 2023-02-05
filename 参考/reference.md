@@ -3926,7 +3926,7 @@ import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
 
 const JobsContainer = () => {
-    const { getJobs, jobs, isLoading, page, numOfJobs } =
+    const { getAllJobs, jobs, isLoading, page, numOfJobs } =
         useAppContext();
     useEffect(() => {
         getJobs();
@@ -3982,6 +3982,8 @@ export default Job;
 npm install moment
 
 ```
+
+使用 moment 的用处是在于以更好的形式展现时间
 
 ```js
 Job.js;

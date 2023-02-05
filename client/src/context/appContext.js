@@ -22,6 +22,7 @@ import {
     CREATE_JOB_ERROR,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
+    SET_EDIT_JOB,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -280,7 +281,7 @@ const AppProvider = ({ children }) => {
     };
 
     // # 用于获得当前用户所创建过的所有 Jobs
-    const getJobs = async () => {
+    const getAllJobs = async () => {
         let url = `/jobs`;
         dispatch({ type: GET_JOBS_BEGIN });
         try {
@@ -295,6 +296,27 @@ const AppProvider = ({ children }) => {
             // logoutUser();
         }
         clearAlert();
+    };
+
+    /* 
+    # 这个 function 会在 JobCard component 中使用，当用户点击 "edit" 按钮时, 我们的 state data 中关于某一特定工作的 data(isEditing, editJobId, position, company, jobLocation, jobType, status) 将会通过这个 reducer 进行更新, 从而能够在 AddJob component 中显示关于当前正在 edit 的 job 的信息
+    # 可以发现在 AddJob component 中所有 input 的都是根据这些更新的 state data 决定的，所以能保证在 edit 界面显示正确的 values
+    */
+    const setEditJob = (id) => {
+        console.log(`set edit job : ${id}`);
+        dispatch({ type: SET_EDIT_JOB, payload: { jobId: id } });
+    };
+
+    /* 
+    
+    # 在 AddJob component 中 且正处于 editting 状态时(isEditing == true)，当用户点击 save changes 调用的 function 
+    */
+    const editJob = () => {
+        console.log("edit job");
+    };
+
+    const deleteJob = (id) => {
+        console.log(`delete : ${id}`);
     };
 
     /* 
@@ -325,6 +347,10 @@ const AppProvider = ({ children }) => {
                 handleJobChange,
                 clearJobValues,
                 createJob,
+                getAllJobs,
+                setEditJob,
+                deleteJob,
+                editJob,
             }}
         >
             {children}

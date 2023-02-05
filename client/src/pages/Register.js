@@ -57,9 +57,7 @@ function Register() {
 
     // we will invoke this one on initial render and every time the user or navigate changes.
     useEffect(() => {
-        console.log("useEffect in register");
         if (user) {
-            console.log("redirect");
             setTimeout(() => {
                 navigate("/");
             }, 3000);

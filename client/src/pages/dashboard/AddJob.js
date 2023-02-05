@@ -17,6 +17,7 @@ const AddJob = () => {
         handleJobChange,
         clearJobValues,
         createJob,
+        editJob,
     } = useAppContext();
 
     const handleSubmit = (event) => {
@@ -27,9 +28,9 @@ const AddJob = () => {
         //     return;
         // }
 
-        // 如果处于 edit 状态, 不进行 create job 的操作
-
         if (isEditing) {
+            // * 如果处于 edit 状态, 不进行 create job 的操作
+            editJob();
             return;
         }
         createJob();
