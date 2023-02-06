@@ -97,7 +97,72 @@ const deleteJob = async (req, res) => {
 };
 
 const showStats = async (req, res) => {
-    res.send("showStats route works");
+    let stats = await Job.aggregate([
+        {
+            // * We find all the jobs that belong to a certain user.
+            $match: {
+                createdBy: mongoose.Types.ObjectId(req.user.userId),
+            },
+        },
+        {
+            // * after the above matching, then group them by the application status and count the number of each status
+            $group: { _id: "$status", count: { $sum: 1 } },
+        },
+    ]);
+    /* 
+    此时的 stats:
+    {
+        "stats": [
+            {
+                "_id": "Declined",
+                "count": 36
+            },
+            {
+                "_id": "Interviewing",
+                "count": 34
+            },
+            {
+                "_id": "Applied",
+                "count": 32
+            }
+        ]
+    }
+    */
+
+    stats = stats.reduce((acc, curr) => {
+        const { _id: title, count } = curr;
+        acc[title] = count;
+        return acc;
+    }, {});
+    /* 
+    经过 reduce function 整理之后:
+    {
+        "stats": {
+            "Declined": 36,
+            "Interviewing": 34,
+            "Applied": 32
+        }
+    }
+    */
+
+    const defaultStats = {
+        pending: stats.pending || 0,
+        interview: stats.interview || 0,
+        declined: stats.declined || 0,
+    };
+    /* 
+    // * create defaultStats 的意义在于: 如果用户刚刚注册处于没有数据的状态, 后端也要给与各个 status 默认值, 否则前端会出现错误
+    {
+        "defaultStats": {
+            "pending": 0,
+            "interview": 0,
+            "declined": 0
+        }
+    }
+    
+    */
+    let monthlyApplications = [];
+    res.status(201).json({ monthlyApplications, defaultStats });
 };
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };
