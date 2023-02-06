@@ -23,6 +23,7 @@ import {
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
+    DELETE_JOB_BEGIN,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -315,8 +316,18 @@ const AppProvider = ({ children }) => {
         console.log("edit job");
     };
 
-    const deleteJob = (id) => {
-        console.log(`delete : ${id}`);
+    /* '
+    # 根据 jobId 删除某一特定 job
+    */
+    const deleteJob = async (jobId) => {
+        dispatch({ type: DELETE_JOB_BEGIN });
+        try {
+            await axiosInstance.delete(`/jobs/${jobId}`);
+            // * once we delete the job on the database, we should make another request to get the latest jobs. 因为我们是从后端的 db 中删除工作而不是从前端的 jobs state 中删除的, 所以需要再次从后端获取最新的数据
+            getAllJobs();
+        } catch (error) {
+            console.log(error.response.msg);
+        }
     };
 
     /* 
