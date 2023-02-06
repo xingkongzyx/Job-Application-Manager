@@ -1,4 +1,5 @@
 import React, { useReducer, useContext, createContext } from "react";
+
 import axios from "axios";
 import reducer from "./reducer";
 import {
@@ -23,6 +24,9 @@ import {
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
+    EDIT_JOB_BEGIN,
+    EDIT_JOB_SUCCESS,
+    EDIT_JOB_ERROR,
     DELETE_JOB_BEGIN,
 } from "./action";
 
@@ -312,8 +316,37 @@ const AppProvider = ({ children }) => {
     
     # 在 AddJob component 中 且正处于 editting 状态时(isEditing == true)，当用户点击 save changes 调用的 function 
     */
-    const editJob = () => {
-        console.log("edit job");
+    const editJob = async () => {
+        dispatch({ type: EDIT_JOB_BEGIN });
+        try {
+            const {
+                position,
+                company,
+                jobLocation,
+                jobType,
+                status,
+            } = state;
+
+            await axiosInstance.patch(`/jobs/${state.editJobId}`, {
+                company,
+                position,
+                jobLocation,
+                jobType,
+                status,
+            });
+            dispatch({
+                type: EDIT_JOB_SUCCESS,
+            });
+
+            dispatch({ type: CLEAR_JOB_VALUES });
+        } catch (error) {
+            if (error.response.status === 401) return;
+            dispatch({
+                type: EDIT_JOB_ERROR,
+                payload: { msg: error.response.data.msg },
+            });
+        }
+        clearAlert();
     };
 
     /* '
@@ -362,6 +395,7 @@ const AppProvider = ({ children }) => {
                 setEditJob,
                 deleteJob,
                 editJob,
+                
             }}
         >
             {children}

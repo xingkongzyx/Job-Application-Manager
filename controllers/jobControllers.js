@@ -72,11 +72,14 @@ const deleteJob = async (req, res) => {
     // * url: /api/v1/jobs/:id
     // * 从 url 获取当前正在修改的 job 的 Id
     const jobId = req.params.id;
+
+    // * 首先判断 url 中传入的 jobId 是否是mongodb能够接受的合法 id
     if (mongoose.Types.ObjectId.isValid(jobId) === false) {
         throw new NotFoundError(
             `jobId ${jobId} is invalid. DELETE failed`
         );
     }
+    // * 其次判断根据这个 jobId 能够找到对应的 job, 如果不能, 直接报错
     const foundJob = await Job.findOne({ _id: jobId });
     if (!foundJob) {
         throw new NotFoundError(
@@ -84,9 +87,10 @@ const deleteJob = async (req, res) => {
         );
     }
 
-    // * 对当前 user 的 permission 进行检查, 如果当前 User 不是创建工作的原 user, 不允许它对当前 job data 进行更改. 但是为了防止后续添加 admin 的角色, 所以不在 mongoose 的function中进行检查, 而是单独创建一个方程, 其中更方便包含针对 admin 的处理逻辑
+    // * 在这之后, 对当前 user 的 permission 进行检查, 如果当前 User 不是创建工作的原 user, 不允许它对当前 job data 进行更改. 但是为了防止后续添加 admin 的角色, 所以不在 mongoose 的function中进行检查, 而是单独创建一个方程, 其中更方便包含针对 admin 的处理逻辑
     checkPermission(req.user, foundJob.createdBy);
 
+    // * 最后, 将这个 job 从数据库中移除
     await foundJob.remove();
 
     res.status(200).json({ msg: "Success, job removed!" });

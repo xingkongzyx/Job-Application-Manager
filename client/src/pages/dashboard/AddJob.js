@@ -1,6 +1,7 @@
 import { FormRow, Alert, FormRowSelect } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
+import { useNavigate } from "react-router-dom";
 
 const AddJob = () => {
     const {
@@ -19,21 +20,29 @@ const AddJob = () => {
         createJob,
         editJob,
     } = useAppContext();
-
+    const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         // * 这三个 values 在表格中都是一定要填写的, 像底下的 status 和 Job Type 都是 dropdown 类型的input, 会有默认值
-        // if (!position || !company || !jobLocation) {
-        //     displayAlert();
-        //     return;
-        // }
+        if (!position || !company || !jobLocation) {
+            displayAlert();
+            return;
+        }
 
         if (isEditing) {
             // * 如果处于 edit 状态, 不进行 create job 的操作
             editJob();
+            setTimeout(() => {
+                navigate("/all-jobs");
+            }, 2000);
             return;
         }
         createJob();
+
+        setTimeout(() => {
+            navigate("/all-jobs");
+        }, 2000);
+
         console.log("user created");
     };
 
