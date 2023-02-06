@@ -146,17 +146,17 @@ const showStats = async (req, res) => {
     */
 
     const defaultStats = {
-        pending: stats.pending || 0,
-        interview: stats.interview || 0,
-        declined: stats.declined || 0,
+        Interviewing: stats.Interviewing || 0,
+        Applied: stats.Applied || 0,
+        Declined: stats.Declined || 0,
     };
     /* 
     // * create defaultStats 的意义在于: 如果用户刚刚注册处于没有数据的状态, 后端也要给与各个 status 默认值, 否则前端会出现错误
     {
         "defaultStats": {
-            "pending": 0,
-            "interview": 0,
-            "declined": 0
+            "Interviewing": 0,
+            "Applied": 0,
+            "Declined": 0
         }
     }
     

@@ -10,6 +10,9 @@ import JobCard from "./JobCard";
 import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
 import JobCardInfo from "./JobCardInfo";
+import StatsContainer from "./StatsContainer";
+import ChartsContainer from "./ChartsContainer";
+import Loading from "./Loading";
 
 export {
     NavLinks,
@@ -24,4 +27,7 @@ export {
     SearchContainer,
     JobCard,
     JobCardInfo,
+    StatsContainer,
+    ChartsContainer,
+    Loading,
 };

@@ -24,6 +24,8 @@ import {
     EDIT_JOB_SUCCESS,
     EDIT_JOB_ERROR,
     DELETE_JOB_BEGIN,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
 } from "./action";
 import { initialState } from "./appContext";
 
@@ -232,6 +234,17 @@ const reducer = (state, action) => {
             };
         case DELETE_JOB_BEGIN:
             return { ...state, isLoading: true };
+        // * 用于前端 stats/ 界面的渲染
+        case SHOW_STATS_BEGIN:
+            return { ...state, isLoading: true, showAlert: false };
+        case SHOW_STATS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                jobStats: action.payload.jobStats,
+                monthlyJobApplications:
+                    action.payload.monthlyJobApplications,
+            };
         default:
             throw new Error("No such action type", action.type);
     }

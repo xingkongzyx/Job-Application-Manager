@@ -28,6 +28,8 @@ import {
     EDIT_JOB_SUCCESS,
     EDIT_JOB_ERROR,
     DELETE_JOB_BEGIN,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -61,6 +63,9 @@ const initialState = {
     numOfPages: 1,
     // 记录从后端获取的当前用户创建的 job applications 目前应该显示第几页
     page: 1,
+    // 记录从后端获取的各个状态("Interviewing", "Applied", "Declined") job application 的数量
+    jobStats: {},
+    monthlyJobApplications: [],
 };
 
 const AppContext = createContext();
@@ -363,6 +368,24 @@ const AppProvider = ({ children }) => {
         }
     };
 
+    const showJobStats = async () => {
+        dispatch({ type: SHOW_STATS_BEGIN });
+        try {
+            const { data } = await axiosInstance.get("/jobs/stats");
+            const { monthlyApplications, defaultStats } = data;
+            dispatch({
+                type: SHOW_STATS_SUCCESS,
+                payload: {
+                    jobStats: defaultStats,
+                    monthlyJobApplications: monthlyApplications,
+                },
+            });
+        } catch (error) {
+            console.log(error.response.msg);
+        }
+        clearAlert();
+    };
+
     /* 
     # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
     */
@@ -395,7 +418,7 @@ const AppProvider = ({ children }) => {
                 setEditJob,
                 deleteJob,
                 editJob,
-                
+                showJobStats,
             }}
         >
             {children}
