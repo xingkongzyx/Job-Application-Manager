@@ -11,7 +11,7 @@ const Stats = () => {
         showJobStats,
         isLoading,
         monthlyJobApplications,
-        jobStats,
+        
     } = useAppContext();
     useEffect(() => {
         showJobStats();

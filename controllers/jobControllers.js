@@ -2,6 +2,8 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 import Job from "../model/Job.js";
 import checkPermission from "./utils/checkPermission.js";
 import mongoose from "mongoose";
+import moment from "moment";
+
 const createJob = async (req, res) => {
     const { position, company } = req.body;
 
@@ -161,7 +163,45 @@ const showStats = async (req, res) => {
     }
     
     */
-    let monthlyApplications = [];
+
+    // * 从 db 中获取 monthlyApplications 的数据(为了前端显示方便, 只获取最新的六个)
+    let monthlyApplications = await Job.aggregate([
+        {
+            $match: {
+                createdBy: mongoose.Types.ObjectId(req.user.userId),
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    year: {
+                        $year: "$createdAt",
+                    },
+                    month: {
+                        $month: "$createdAt",
+                    },
+                },
+                count: { $sum: 1 },
+            },
+        },
+        { $sort: { "_id.year": -1, "_id.month": -1 } },
+        { $limit: 6 },
+    ]);
+    // 对于在上面获取的 monthlyApplications data 进行格式化, 方便前端使用数据
+    monthlyApplications = monthlyApplications
+        .map((item) => {
+            const {
+                _id: { year, month },
+                count,
+            } = item;
+            // accepts 0-11
+            const date = moment()
+                .month(month - 1)
+                .year(year)
+                .format("MMM Y");
+            return { date, count };
+        })
+        .reverse();
     res.status(201).json({ monthlyApplications, defaultStats });
 };
 
