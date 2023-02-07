@@ -23,7 +23,16 @@ const createJob = async (req, res) => {
 
 const getAllJobs = async (req, res) => {
     // 根据 userId 寻找当前用户创造的所有 jobs
-    const jobs = await Job.find({ createdBy: req.user.userId });
+    let queryObj = { createdBy: req.user.userId };
+
+    // 检查访问的 url 中是否含有 search query, 有的话将 searchKeyword 也加入搜索标准中
+    const searchKeyword = req.query.search;
+    if (searchKeyword) {
+        queryObj.position = { $regex: searchKeyword, $options: "i" };
+    }
+
+    const jobs = await Job.find(queryObj);
+
     res.send({ jobs, numOfJobs: jobs.length, numOfPages: 1 });
 };
 

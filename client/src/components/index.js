@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 import NavLinks from "./NavLinks";
 import FormRowSelect from "./FormRowSelect";
 import JobCard from "./JobCard";
-import SearchContainer from "./SearchContainer";
+import SearchBar from "./SearchBar";
 import JobsContainer from "./JobsContainer";
 import JobCardInfo from "./JobCardInfo";
 import StatsContainer from "./StatsContainer";
@@ -24,7 +24,7 @@ export {
     Navbar,
     FormRowSelect,
     JobsContainer,
-    SearchContainer,
+    SearchBar,
     JobCard,
     JobCardInfo,
     StatsContainer,

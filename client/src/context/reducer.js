@@ -26,6 +26,7 @@ import {
     DELETE_JOB_BEGIN,
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
+    HANDLE_SEARCH_KEY_CHANGE,
 } from "./action";
 import { initialState } from "./appContext";
 
@@ -244,6 +245,12 @@ const reducer = (state, action) => {
                 jobStats: action.payload.jobStats,
                 monthlyJobApplications:
                     action.payload.monthlyJobApplications,
+            };
+
+        case HANDLE_SEARCH_KEY_CHANGE:
+            return {
+                ...state,
+                [action.payload.name]: action.payload.value,
             };
         default:
             throw new Error("No such action type", action.type);

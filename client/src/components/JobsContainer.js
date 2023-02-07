@@ -5,11 +5,18 @@ import JobCard from "./JobCard";
 import Wrapper from "../assets/wrappers/JobsContainer";
 
 const JobsContainer = () => {
-    const { getAllJobs, jobs, isLoading, page, numOfJobs } =
-        useAppContext();
+    const {
+        getAllJobs,
+        jobs,
+        isLoading,
+        page,
+        numOfJobs,
+        searchKeyWord,
+    } = useAppContext();
+    
     useEffect(() => {
         getAllJobs();
-    }, []);
+    }, [searchKeyWord]);
 
     if (isLoading) {
         return <Loading center />;

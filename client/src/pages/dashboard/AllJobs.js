@@ -1,10 +1,10 @@
 import React from "react";
-import { JobsContainer, SearchContainer } from "../../components";
+import { JobsContainer, SearchBar } from "../../components";
 
 function AllJobs() {
     return (
         <>
-            <SearchContainer></SearchContainer>
+            <SearchBar></SearchBar>
             <JobsContainer></JobsContainer>
         </>
     );

@@ -30,6 +30,7 @@ import {
     DELETE_JOB_BEGIN,
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
+    HANDLE_SEARCH_KEY_CHANGE,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -66,6 +67,8 @@ const initialState = {
     // 记录从后端获取的各个状态("Interviewing", "Applied", "Declined") job application 的数量
     jobStats: {},
     monthlyJobApplications: [],
+    // 用于 allJob 界面的 search 功能
+    searchKeyWord: "",
 };
 
 const AppContext = createContext();
@@ -249,6 +252,13 @@ const AppProvider = ({ children }) => {
         });
     };
 
+    const handleSearchKeyChange = ({ name, value }) => {
+        dispatch({
+            type: HANDLE_SEARCH_KEY_CHANGE,
+            payload: { name: name, value: value },
+        });
+    };
+
     /* 
     # 在 addJob 界面当用户点击 "reset" 按钮时会调用的方法，用于 reset 所有以及填写的值
     */
@@ -292,7 +302,11 @@ const AppProvider = ({ children }) => {
 
     // # 用于获得当前用户所创建过的所有 Jobs
     const getAllJobs = async () => {
-        let url = `/jobs`;
+        let url = "/jobs";
+        const { searchKeyWord } = state;
+        if (searchKeyWord) {
+            url = `/jobs?search=${searchKeyWord}`;
+        }
         dispatch({ type: GET_JOBS_BEGIN });
         try {
             const { data } = await axiosInstance.get(url);
@@ -419,6 +433,7 @@ const AppProvider = ({ children }) => {
                 deleteJob,
                 editJob,
                 showJobStats,
+                handleSearchKeyChange,
             }}
         >
             {children}
