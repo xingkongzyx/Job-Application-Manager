@@ -20,9 +20,9 @@ const Wrapper = styled.section`
         column-gap: 2rem;
         row-gap: 0.5rem;
     }
-    h4 {
+    h5 {
         font-weight: 300;
-        text-align: center;
+        text-align: left;
     }
     input {
         text-align: center;

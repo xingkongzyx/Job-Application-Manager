@@ -9,7 +9,7 @@ function ChartsContainer() {
     const [showBarChart, setShowBarChart] = useState(true);
     return (
         <Wrapper>
-            <h3>Monthly Applications Statistics</h3>
+            <h4>6-Month Application Report</h4>
             <button
                 type="button"
                 onClick={() => {

@@ -14,7 +14,7 @@ function SearchBar() {
     return (
         <Wrapper>
             <form className="form">
-                <h4>Search Based On Job Position</h4>
+                <h5>Search Applications</h5>
                 {/* search position */}
                 <div className="form-center">
                     <div className="form-row">
@@ -24,6 +24,7 @@ function SearchBar() {
                             name="searchKeyWord"
                             value={searchKeyWord}
                             onChange={handleSearch}
+                            placeholder="Please specify the job position you would like to search for"
                         />
                     </div>
                 </div>
