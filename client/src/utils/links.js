@@ -6,26 +6,26 @@ import { ImProfile } from "react-icons/im";
 const links = [
     {
         id: 1,
-        text: "stats",
+        text: "Statistics",
         // * 这里的 path 对应着 <App /> 中设置的 <SharedLayout /> 中的各个 link
         path: "/",
         icon: <IoBarChartSharp />,
     },
     {
         id: 2,
-        text: "all jobs",
+        text: "All Applications",
         path: "all-jobs",
         icon: <MdQueryStats />,
     },
+    // {
+    //     id: 3,
+    //     text: "add job",
+    //     path: "add-job",
+    //     icon: <FaWpforms />,
+    // },
     {
         id: 3,
-        text: "add job",
-        path: "add-job",
-        icon: <FaWpforms />,
-    },
-    {
-        id: 4,
-        text: "profile",
+        text: "Profile",
         path: "profile",
         icon: <ImProfile />,
     },

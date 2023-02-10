@@ -30,7 +30,7 @@ const Wrapper = styled.aside`
             padding-top: 2rem;
             display: flex;
             flex-direction: column;
-            height: 75vh;
+            height: 60vh;
             justify-content: space-around;
         }
         .nav-link {
@@ -41,6 +41,27 @@ const Wrapper = styled.aside`
             padding-left: 2.5rem;
             text-transform: capitalize;
             transition: var(--transition);
+        }
+        .nav-link-add-button {
+            display: flex;
+            align-items: center;
+            color: var(--grey-500);
+            margin-top: 15vh;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            padding: 1rem 0;
+            padding-left: 1.5rem;
+            text-transform: capitalize;
+            transition: var(--transition);
+            background: var(--grey-200);
+            border-radius: 30px;
+            border: 1px solid black;
+        }
+        .nav-link-add-button:hover {
+            background: var(--grey-400);
+            padding-left: 2rem;
+            color: var(--black);
+            border: 1px solid black;
         }
         .nav-link:hover {
             background: var(--grey-50);

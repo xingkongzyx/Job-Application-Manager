@@ -9,6 +9,7 @@ const Wrapper = styled.article`
 
     header {
         padding: 1rem 1.5rem;
+        padding-right: 0;
         border-bottom: 1px solid var(--grey-100);
         display: grid;
         grid-template-columns: auto 1fr;
@@ -79,6 +80,18 @@ const Wrapper = styled.article`
         width: 100px;
         height: 30px;
     }
+    .top-status {
+        border-radius: var(--borderRadius);
+        text-transform: capitalize;
+        letter-spacing: var(--letterSpacing);
+        height: 100%;
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: large;
+        place-self: end right;
+    }
     footer {
         margin-top: 1rem;
     }
@@ -99,6 +112,11 @@ const Wrapper = styled.article`
     }
     &:hover .actions {
         visibility: visible;
+    }
+    .actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10%;
     }
 `;
 

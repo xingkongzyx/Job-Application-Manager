@@ -28,6 +28,7 @@ const JobCard = ({
         <Wrapper>
             <header>
                 <div className="main-icon">{company.charAt(0)}</div>
+                <div className={`top-status ${status}`}>{status}</div>
                 <div className="info">
                     <h5>{position}</h5>
                     <p>{company}</p>
@@ -48,7 +49,7 @@ const JobCard = ({
                         icon={<FaBriefcase />}
                         text={jobType}
                     />
-                    <div className={`status ${status}`}>{status}</div>
+                    {/* <div className={`status ${status}`}>{status}</div> */}
                 </div>
                 <footer>
                     {/* footer 中创建的是两个 buttons */}
