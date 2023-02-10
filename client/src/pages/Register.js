@@ -17,7 +17,7 @@ function Register() {
     const [values, setValues] = useState(initialValues);
     const navigate = useNavigate();
     const contextValues = useAppContext();
-    
+
     const {
         showAlert,
         isLoading,
@@ -67,7 +67,7 @@ function Register() {
     return (
         <Wrapper className="full-page">
             <form className="form" onSubmit={onSubmit}>
-                <Logo />
+                {/* <Logo /> */}
                 {showAlert ? <Alert /> : ""}
                 <h3>{values.isMember ? "Login" : "Register"}</h3>
 
