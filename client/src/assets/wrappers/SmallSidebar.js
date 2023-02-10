@@ -79,12 +79,14 @@ const Wrapper = styled.aside`
         background: var(--grey-200);
         border-radius: 30px;
         border: 1.5px solid black;
+        font-weight: bold;
     }
     .nav-link-add-button:hover {
         background: var(--grey-400);
         padding-left: 2rem;
         color: var(--black);
         border: 1.5px solid black;
+        font-weight: bold;
     }
 
     .active {

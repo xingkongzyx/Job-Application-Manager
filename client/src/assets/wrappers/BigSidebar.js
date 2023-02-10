@@ -26,6 +26,9 @@ const Wrapper = styled.aside`
             align-items: center;
             padding-left: 2.5rem;
         }
+        .logo {
+            width: 85%;
+        }
         .nav-links {
             padding-top: 2rem;
             display: flex;
@@ -56,12 +59,14 @@ const Wrapper = styled.aside`
             background: var(--grey-200);
             border-radius: 30px;
             border: 1px solid black;
+            font-weight: bold;
         }
         .nav-link-add-button:hover {
             background: var(--grey-400);
             padding-left: 2rem;
             color: var(--black);
             border: 1px solid black;
+            font-weight: bold;
         }
         .nav-link:hover {
             background: var(--grey-50);

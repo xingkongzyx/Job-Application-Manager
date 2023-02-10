@@ -32,6 +32,7 @@ const StatsContainer = () => {
         },
     ];
 
+
     return (
         <Wrapper>
             {defaultStats.map((item, index) => {

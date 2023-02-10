@@ -16,8 +16,8 @@ function Landing() {
                         Job Application <span>Manager</span>
                     </h1>
                     <p>
-                        The Jobster Tracking App streamlines job
-                        searching by providing a comprehensive
+                        The Job Application Manager App streamlines
+                        job searching by providing a comprehensive
                         platform to manage and track job applications.
                         Never miss an opportunity or forget important
                         details again. Try it today.
