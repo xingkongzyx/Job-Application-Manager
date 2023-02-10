@@ -5,9 +5,9 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "server": "nodemon server --ignore client",
-        "client": "npm start --prefix client",
-        "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
+        "server": "nodemon backend/server",
+        "client": "npm run start --prefix frontend",
+        "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
     },
     "repository": {
         "type": "git",

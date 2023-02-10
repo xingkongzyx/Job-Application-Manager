@@ -10,8 +10,8 @@ import JobCard from "./JobComponents/JobCard";
 import SearchBar from "./JobComponents/SearchBar";
 import JobsContainer from "./JobComponents/JobsContainer";
 import JobCardInfo from "./JobComponents/JobCardInfo";
-import StatsContainer from "./JobComponents/StatsContainer";
-import ChartsContainer from "./JobComponents/ChartsContainer";
+import StatsContainer from "./StatComponents/StatsContainer";
+import ChartsContainer from "./StatComponents/ChartsContainer";
 import Loading from "./Loading";
 
 export {
