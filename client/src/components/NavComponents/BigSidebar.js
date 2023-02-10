@@ -1,8 +1,8 @@
 import React from "react";
-import Wrapper from "../assets/wrappers/BigSidebar";
-import Logo from "./Logo";
+import Wrapper from "../../assets/wrappers/BigSidebar";
+import Logo from "../Logo";
 import NavLinks from "./NavLinks";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../../context/appContext";
 
 export const BigSidebar = () => {
     const { showSidebar } = useAppContext();

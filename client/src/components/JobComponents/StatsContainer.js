@@ -1,11 +1,11 @@
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../../context/appContext";
 import StatItem from "./StatsItem";
 import {
     FaSuitcaseRolling,
     FaCalendarCheck,
     FaBug,
 } from "react-icons/fa";
-import Wrapper from "../assets/wrappers/StatsContainer";
+import Wrapper from "../../assets/wrappers/StatsContainer";
 const StatsContainer = () => {
     const { jobStats } = useAppContext();
     const defaultStats = [

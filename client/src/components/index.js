@@ -1,17 +1,17 @@
 import Logo from "./Logo";
 import FormRow from "./FormRow";
 import Alert from "./Alert";
-import SmallSidebar from "./SmallSidebar";
-import BigSidebar from "./BigSidebar";
-import Navbar from "./Navbar";
-import NavLinks from "./NavLinks";
+import SmallSidebar from "./NavComponents/SmallSidebar";
+import BigSidebar from "./NavComponents/BigSidebar";
+import Navbar from "./NavComponents/Navbar";
+import NavLinks from "./NavComponents/NavLinks";
 import FormRowSelect from "./FormRowSelect";
-import JobCard from "./JobCard";
-import SearchBar from "./SearchBar";
-import JobsContainer from "./JobsContainer";
-import JobCardInfo from "./JobCardInfo";
-import StatsContainer from "./StatsContainer";
-import ChartsContainer from "./ChartsContainer";
+import JobCard from "./JobComponents/JobCard";
+import SearchBar from "./JobComponents/SearchBar";
+import JobsContainer from "./JobComponents/JobsContainer";
+import JobCardInfo from "./JobComponents/JobCardInfo";
+import StatsContainer from "./JobComponents/StatsContainer";
+import ChartsContainer from "./JobComponents/ChartsContainer";
 import Loading from "./Loading";
 
 export {

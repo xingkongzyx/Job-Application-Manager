@@ -6,8 +6,8 @@ import {
     FaCalendarAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useAppContext } from "../context/appContext";
-import Wrapper from "../assets/wrappers/Job";
+import { useAppContext } from "../../context/appContext";
+import Wrapper from "../../assets/wrappers/Job";
 import JobCardInfo from "./JobCardInfo";
 
 const JobCard = ({

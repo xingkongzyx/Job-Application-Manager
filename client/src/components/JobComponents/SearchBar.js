@@ -1,5 +1,5 @@
-import { useAppContext } from "../context/appContext";
-import Wrapper from "../assets/wrappers/SearchContainer";
+import { useAppContext } from "../../context/appContext";
+import Wrapper from "../../assets/wrappers/SearchContainer";
 
 function SearchBar() {
     const { searchKeyWord, handleSearchKeyChange } = useAppContext();

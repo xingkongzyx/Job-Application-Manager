@@ -4,9 +4,9 @@ import {
     FaUserCircle,
     FaCaretDown,
 } from "react-icons/fa";
-import { useAppContext } from "../context/appContext";
-import Logo from "./Logo";
-import Wrapper from "../assets/wrappers/Navbar";
+import { useAppContext } from "../../context/appContext";
+import Logo from "../Logo";
+import Wrapper from "../../assets/wrappers/Navbar";
 
 const Navbar = () => {
     const { toggleSidebar, logoutUser, user } = useAppContext();

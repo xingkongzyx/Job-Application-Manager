@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "../assets/wrappers/JobInfo";
+import Wrapper from "../../assets/wrappers/JobInfo";
 
 const JobCardInfo = ({ icon, text }) => {
     return (
