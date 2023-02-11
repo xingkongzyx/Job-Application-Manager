@@ -53,23 +53,26 @@ MERN Stack Application for tracking Job Search Process
 -   Express
 -   MongoDB
 
-### users
+### Demo Images
 
-| Email           | Password |
-| --------------- | -------- |
-| 12345@gmail.com | password |
+<img src="./github_demo_images/demo1.png" style="zoom:50%;" />
+<br />
+<img src="./github_demo_images/demo2.png" style="zoom:50%;" />
+<br />
+<img src="./github_demo_images/demo3.png" style="zoom:50%;" />
+
+---
 
 #### Validation
 
 -   **Email validation**: as per **RFC2822** standards.
 -   **Password validation**:
     -   The password must be more than **6** characters.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+        | Sample Email | Sample Password |
+        | --------------- | -------- |
+        | testemail@gmail.com | 4?4W+HRLe"E |
 
 ---
-
-<!-- GETTING STARTED -->
 
 ## Getting Started
 
