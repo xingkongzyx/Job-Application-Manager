@@ -23,10 +23,12 @@ const register = async (req, res) => {
     }
     // create the new user
     const newUser = await User.create(req.body);
+
     // use the Instance Methods with Mongoose to create json web token based on the password property
     const token = newUser.createJWT();
     console.log(bgCyan.yellow.underline("New user registered!"));
     newUser.password = undefined;
+
     res.status(201).json({
         user: newUser,
         token,
@@ -39,11 +41,11 @@ const login = async (req, res) => {
 
     // if the required fields are empty, throw error directly from server side validation with the help of defined error handlers
     if (!email || !password) {
-        throw new NotAuthenticationError(
+        throw new BadRequestError(
             "Please provide all values - from server error handler"
         );
     }
-    // If the user exists, we will need to validate the password then. But if the user doesn't exist,  we want to send back vague unauthenticated error response.
+    // If the user exists, we will need to validate the password then. But if the user doesn't exist, we want to send back vague unauthenticated error response.
     // 使用 "+password" 用于获取 password field。否则默认情况下因为设置了 "select: false", password是无法被获取的
     let foundUser = await User.findOne({ email }).select("+password");
     if (!foundUser) {
@@ -57,7 +59,7 @@ const login = async (req, res) => {
 
     if (!isPasswordMatch) {
         throw new NotAuthenticationError(
-            "password not match - from server error handler"
+            "Password not match - from server error handler"
         );
     }
 

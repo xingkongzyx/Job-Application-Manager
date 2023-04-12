@@ -33,12 +33,14 @@ import {
     HANDLE_SEARCH_KEY_CHANGE,
 } from "./action";
 
+// * grab all of those things from the local storage on initial load. Do this right above the initial state.
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
 
 const initialState = {
     isLoading: false,
+    // 以下三个属性是用来显示 alert message 的, 根据 dispatch 不同的 action, 这三个值也会发生改变, 从而导致整个前端进行 re-render.
     showAlert: false,
     alertType: "",
     alertText: "",
@@ -176,6 +178,7 @@ const AppProvider = ({ children }) => {
         clearAlert();
     };
 
+    // # 与 registerUser 方法非常相似
     const loginUser = async (curUser) => {
         // 只要 invoke 了这个 function, 那么无论如何都先 *  到 reducer
         dispatch({ type: LOGIN_USER_BEGIN });
@@ -401,7 +404,7 @@ const AppProvider = ({ children }) => {
     };
 
     /* 
-    # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除 
+    # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除。他们会在用户初次登陆或者最后登出时被调用。
     */
     const addUserToLocalStorage = ({ user, token, location }) => {
         localStorage.setItem("user", JSON.stringify(user));

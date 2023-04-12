@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide password"],
         minlength: 6,
-        // { select : false } means the field will not be queried from the database at all. Thus, you cannot have access to it inside the method unless you specifically override that setting.
+        // ! { select : false } means the field will not be queried from the database at all. Thus, you cannot have access to it inside the method unless you specifically override that setting.
         select: false,
     },
     lastName: {
@@ -58,7 +58,7 @@ UserSchema.pre("save", async function () {
 });
 
 /*
- * Create the jwt and return it
+ * instance method: Create the jwt and return it
  */
 UserSchema.methods.createJWT = function () {
     // "this" refers to the specific instance of the Model, in this cas it refers to a specific User.
@@ -68,7 +68,7 @@ UserSchema.methods.createJWT = function () {
 };
 
 /*
- * During login: Validate if the passed password match with password stored in db
+ * instance method: During login: Validate if the passed password match with password stored in db
  */
 UserSchema.methods.validatePassword = async function (
     candidatePassword

@@ -9,7 +9,7 @@ const initialValues = {
     name: "",
     email: "",
     password: "",
-    // 用于检查是否已经在这个网站注册过
+    // 用于检查当前用户是否已经在注册过
     isMember: true,
 };
 
@@ -47,6 +47,7 @@ function Register() {
         }
         let currentUser = { name, email, password };
 
+        // 根据 isMember 状态的不同决定调用哪个方法
         if (isMember) {
             loginUser(currentUser);
         } else {
@@ -56,6 +57,7 @@ function Register() {
     };
 
     // we will invoke this one on initial render and every time the user or navigate changes.
+    // * 成功添加功能：一旦用户注册或登录，用户最终将从注册页面导航到dashboard，也就是我们的主页。
     useEffect(() => {
         if (user) {
             setTimeout(() => {
