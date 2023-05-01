@@ -176,6 +176,7 @@ const showStats = async (req, res) => {
     // * 从 db 中获取 monthlyApplications 的数据(为了前端显示方便, 只获取最新的六个)
     let monthlyApplications = await Job.aggregate([
         {
+            // 得到当前用户创建的所有 jobs
             $match: {
                 createdBy: mongoose.Types.ObjectId(req.user.userId),
             },
@@ -193,9 +194,12 @@ const showStats = async (req, res) => {
                 count: { $sum: 1 },
             },
         },
+        // 对结果进行排序,确保优先显示最新日期的 jobs data
         { $sort: { "_id.year": -1, "_id.month": -1 } },
+        // 限制获取的结果只要最近的 6 个
         { $limit: 6 },
     ]);
+
     // 对于在上面获取的 monthlyApplications data 进行格式化, 方便前端使用数据
     monthlyApplications = monthlyApplications
         .map((item) => {

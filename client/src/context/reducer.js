@@ -235,6 +235,7 @@ const reducer = (state, action) => {
             };
         case DELETE_JOB_BEGIN:
             return { ...state, isLoading: true };
+
         // * 用于前端 stats/ 界面的渲染
         case SHOW_STATS_BEGIN:
             return { ...state, isLoading: true, showAlert: false };

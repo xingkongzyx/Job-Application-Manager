@@ -33,7 +33,7 @@ import {
     HANDLE_SEARCH_KEY_CHANGE,
 } from "./action";
 
-// * grab all of those things from the local storage on initial load. Do this right above the initial state.
+// * grab all of those things from the local storage on initial load. Do this right above the initial state. 这样能够确保用户即使刷新界面还能在 localStorage 中找到这些数据.
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
