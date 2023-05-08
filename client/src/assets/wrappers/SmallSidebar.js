@@ -69,24 +69,47 @@ const Wrapper = styled.aside`
     .nav-link-add-button {
         display: flex;
         align-items: center;
-        color: var(--grey-500);
-        margin-top: 15vh;
-        padding: 1rem 0;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        margin-top: 3vh;
         text-transform: capitalize;
         transition: var(--transition);
-        background: var(--grey-200);
-        border-radius: 30px;
-        border: 1.5px solid black;
+        border-radius: 50%;
+
         font-weight: bold;
+        color: var(--white);
+        background: var(--primary-500);
+    }
+    .nav-link-add-button .active {
+        display: flex;
+        align-items: center;
+        margin-top: 3vh;
+        text-transform: capitalize;
+        transition: var(--transition);
+        border-radius: 50%;
+
+        font-weight: bold;
+        color: var(--white);
+        background: var(--primary-500);
+    }
+    .nav-link-add-button::before {
+        content: "+";
+        height: 3rem;
+        width: 3rem;
+        font-size: 3rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-family: courier;
+
+        border-radius: 50%;
     }
     .nav-link-add-button:hover {
-        background: var(--grey-400);
-        padding-left: 2rem;
+        background-color: #004369;
+        /* padding-left: 2rem;
         color: var(--black);
         border: 1.5px solid black;
-        font-weight: bold;
+        font-weight: bold; */
     }
 
     .active {

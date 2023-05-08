@@ -46,7 +46,7 @@ const Wrapper = styled.aside`
             transition: var(--transition);
         }
         .nav-link-add-button {
-            display: flex;
+            /* display: flex;
             align-items: center;
             color: var(--grey-500);
             margin-top: 15vh;
@@ -59,14 +59,41 @@ const Wrapper = styled.aside`
             background: var(--grey-200);
             border-radius: 30px;
             border: 1px solid black;
+            font-weight: bold; */
+            /* color: var(--grey-500); */
+            border-radius: 50%;
+            /* width: 200px;
+            height: 200px; */
+            color: var(--white);
+            background: var(--primary-500);
+            position: absolute;
+            left: 25%;
+            bottom: -30%;
+            transition: all 1s;
+        }
+        /* add */
+
+        .nav-link-add-button::before {
+            content: "+";
+            height: 6rem;
+            width: 6rem;
+            font-size: 6rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
+            font-family: courier;
+
+            border-radius: 50%;
         }
         .nav-link-add-button:hover {
-            background: var(--grey-400);
+            /* background: var(--grey-400);
             padding-left: 2rem;
             color: var(--black);
-            border: 1px solid black;
-            font-weight: bold;
+            border: 1px solid black; 
+             font-weight: bold;  */
+            background-color: #004369;
         }
         .nav-link:hover {
             background: var(--grey-50);

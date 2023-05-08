@@ -39,8 +39,8 @@ function NavLinks({ toggleSidebar }) {
                         : "nav-link-add-button"
                 }
             >
-                <span className="icon">{<FaWpforms />}</span>
-                ADD A NEW JOB
+                {/* <span className="icon">{<FaWpforms />}</span> */}
+                {/* ADD A NEW JOB */}
             </NavLink>
         </>
     );
