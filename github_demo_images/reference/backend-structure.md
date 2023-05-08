@@ -1,68 +1,109 @@
 #### 因为后端使用的是 ES6 module, 所以 import 的语法是与前端不同的, 导入 module 时必须要加上 js 后缀
 
-### Auth Controller: register, login, updateUser
+### Auth Controller: 
 
--   authRouter
+> register, login, updateUser, logout
 
-    -   router.route('/register').post(register);
-    -   router.route('/login').post(login);
+- authRouter
 
-        -   register 和 login 都是从 req.body 获取传入的 name/email/password, 然后进行 database side 的比对检验, 如果有问题 throw custom error. 如果没有 error, 最后返回
+  - `router.route('/register').post(register);`
 
-        ```js
-        res.json({
-            token,
-            user: foundUser,
-            location: foundUser.location,
-        });
-        ```
+  -   `router.route('/login').post(login);`
 
-    -   router.route('/updateUser').patch(updateUser);
+      -   register 和 login 都是从 req.body 获取传入的 name/email/password, 然后进行 database side 的比对检验, 如果有问题 throw custom error. 如果没有 error, 最后返回
 
-        -   对于这个 route 我们改为: `router.route("/updateUser").patch(authenticateUser, updateUser);` 代表在进入 updateUser route handler 之前必须检验 request 的 header 包含有正确的 token，否则不允许进入
+      ```js
+      res.json({
+          token,
+          user: foundUser,
+          location: foundUser.location,
+      });
+      ```
 
-        ```js
-        res.status(200).json({
-            token,
-            user: updatedUser,
-            location: updatedUser.location,
-        });
-        ```
+  - `router.route('/updateUser').patch(updateUser);`
 
-    -   authenticateUser middleWare
+    -   对于这个 route 我们改为: `router.route("/updateUser").patch(authenticateUser, updateUser);` 代表在进入 updateUser route handler 之前必须检验 request 的 header 包含有正确的 token，否则不允许进入
 
-        -   only the user who actually has the data can have access to view the profile and jobs page, etc, we will check the token.
+    ```js
+    res.status(200).json({
+        token,
+        user: updatedUser,
+        location: updatedUser.location,
+    });
+    ```
 
-        -   创建一个 middleware 叫做 authenticateUser, if the token is not valid, or it's not present, then we'll send back the error. And we will log out the user on a frontend as well.
-        -   `router.route("/updateUser").patch(authenticateUser, updateUser);`
+    在 authRoutes.js 文件中，引入在 authController 定义的功能
 
--   app.use('/api/v1/auth', authRouter);
+    ```js
+    import {
+      register,
+      login,
+      updateUser,
+      getCurrentUser,
+      logout,
+    } from '../controllers/authController.js';
+    import authenticateUser from '../middleware/auth.js';
+    import testUser from '../middleware/testUser.js';
+    ```
 
-### Jobs Controller: createJob, deleteJob, getAllJobs, updateJob, showStats
+    然后使用 router 使用这些 controllers
+
+    ```js
+    const router = express.Router();
+    router.route('/register').post(apiLimiter, register);
+    router.route('/login').post(apiLimiter, login);
+    router.get('/logout', logout);
+    
+    router.route('/updateUser').patch(authenticateUser, updateUser);
+    router.route('/getCurrentUser').get(authenticateUser, getCurrentUser);
+    
+    ```
+
+  -   authenticateUser middleWare
+
+      -   only the user who actually has the data can have access to view the profile and jobs page, etc, we will check the token.
+
+      -   创建一个 middleware 叫做 authenticateUser, if the token is not valid, or it's not present, then we'll send back the error. And we will log out the user on a frontend as well.
+      -   `router.route("/updateUser").patch(authenticateUser, updateUser);`
+
+  最后在 server.js 中使用这些 router `app.use('/api/v1/auth', authRouter);`
+
+
+
+### Jobs Controller: 
+
+> createJob, deleteJob, getAllJobs, updateJob, showStats
 
 -   jobsRouter
-    -   router.route('/').post(createJob).get(getAllJobs);
-        -   createJob 返回的是
-            ```json
-            {
-                "job": {
-                    "company": "Google",
-                    "position": "software engineer",
-                    "status": "Applied",
-                    "jobType": "full-time",
-                    "jobLocation": "US",
-                    "createdBy": "63d99e85a980dcd927901634",
-                    "_id": "63dcbc212b94fe197a6bd8ee",
-                    "createdAt": "2023-02-03T07:47:45.542Z",
-                    "updatedAt": "2023-02-03T07:47:45.542Z",
-                    "__v": 0
-                }
+    
+    `router.route("/").post(createJob).get(getAllJobs);`
+    
+    -   createJob 返回的是
+        ```json
+        {
+            "job": {
+                "company": "Google",
+                "position": "software engineer",
+                "status": "Applied",
+                "jobType": "full-time",
+                "jobLocation": "US",
+                "createdBy": "63d99e85a980dcd927901634",
+                "_id": "63dcbc212b94fe197a6bd8ee",
+                "createdAt": "2023-02-03T07:47:45.542Z",
+                "updatedAt": "2023-02-03T07:47:45.542Z",
+                "__v": 0
             }
-            ```
-    -   // place before :id, 防止永远无法到达 ":id"
-    -   router.route('/stats').get(showStats);
-    -   router.route('/:id').delete(deleteJob).patch(updateJob);
--   app.use('/api/v1/jobs', jobsRouter);
+        }
+        ```
+    
+    使用上面这些定义的 controllers：
+    
+    `router.route("/stats").get(showStats);`
+    `router.route("/:id").delete(deleteJob).patch(updateJob);`
+    
+    
+    
+    最后在 server.js 中使用定义的 router `app.use('/api/v1/jobs', authenticateUser, jobsRouter);`
 
 ### User model, collection name is User
 
@@ -191,15 +232,15 @@ A free test data generator and API mocking tool - Mockaroo lets you create custo
 
     ```js
     // populate.js;
-
+    
     import { readFile } from "fs/promises";
-
+    
     import dotenv from "dotenv";
     dotenv.config();
-
+    
     import connectDB from "./db/connect.js";
     import Job from "./models/Job.js";
-
+    
     const start = async () => {
         try {
             //  connect to our database
@@ -220,7 +261,7 @@ A free test data generator and API mocking tool - Mockaroo lets you create custo
             process.exit(1);
         }
     };
-
+    
     start();
     ```
 
