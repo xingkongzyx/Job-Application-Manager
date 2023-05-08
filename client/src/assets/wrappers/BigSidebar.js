@@ -85,6 +85,7 @@ const Wrapper = styled.aside`
         }
         .active {
             color: var(--grey-900);
+            background: gainsboro;
         }
         .active .icon {
             color: var(--primary-500);

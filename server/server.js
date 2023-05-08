@@ -39,6 +39,7 @@ app.use(errorHandlerMiddleware);
 const startServer = async () => {
     // * 确保只有在 mongodb 数据库成功设置的情况下才会启动 server
     try {
+        console.log("url: ", process.env.MONGO_URL);
         await connectDB(process.env.MONGO_URL);
         const port = process.env.PORT || 5000;
         console.log("DB connected");
