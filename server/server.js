@@ -2,7 +2,9 @@ import "express-async-errors";
 import express from "express";
 import { bgGreen, bgMagentaBright } from "console-log-colors";
 import dotenv from "dotenv";
-
+// * 将 .env 中定义的变量进行 register
+dotenv.config(".env");
+console.log(process.env); // remove this after you've confirmed it is working
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/auth.js";
@@ -19,24 +21,29 @@ import mongoSanitize from "express-mongo-sanitize";
 import rateLimiter from "express-rate-limit";
 
 const app = express();
+
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+
 app.use(express.json());
+// only when ready to deploy
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
 
-const apiLimiter = rateLimiter({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-    message:
-        "Too many requests from this IP, please try again after 15 minutes",
-});
+// const apiLimiter = rateLimiter({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+//     message:
+//         "Too many requests from this IP, please try again after 15 minutes",
+// });
 
-// Apply the rate limiting middleware to all requests
-app.use(apiLimiter);
-
-// * 将 .env 中定义的变量进行 register
-dotenv.config();
+// // Apply the rate limiting middleware to all requests
+// app.use(apiLimiter);
 
 // * 只在 dev 环境下使用 morgan middleware
 if (process.env.NODE_ENV !== "production") {
@@ -48,8 +55,11 @@ app.use("/api/v1/auth", authRouter);
 // 对于所有的 job route, 使用 authenticateUser middleware 确保只有在用户得到验证的情况下才能访问这个 route
 app.use("/api/v1/jobs", authenticateUser, jobRouter);
 
-app.get("/", (req, res) => {
-    res.send("Welcome!");
+// only when ready to deploy
+app.get("*", function (request, response) {
+    response.sendFile(
+        path.resolve(__dirname, "../client/build", "index.html")
+    );
 });
 
 // * notFoundMiddleware: will be looking for requests that do not match any of our current route.

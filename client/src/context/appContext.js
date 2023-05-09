@@ -319,8 +319,8 @@ const AppProvider = ({ children }) => {
                 payload: { jobs, numOfJobs, numOfPages },
             });
         } catch (error) {
-            console.log(error);
-            // logoutUser();
+            // console.log(error);
+            logoutUser();
         }
         clearAlert();
     };
