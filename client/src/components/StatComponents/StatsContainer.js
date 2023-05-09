@@ -1,9 +1,9 @@
 import { useAppContext } from "../../context/appContext";
 import StatItem from "./StatsItem";
 import {
-    FaSuitcaseRolling,
-    FaCalendarCheck,
-    FaBug,
+    FaRegGrinBeam,
+    FaRegGrinTongue,
+    FaRegGrimace,
 } from "react-icons/fa";
 import Wrapper from "../../assets/wrappers/StatsContainer";
 const StatsContainer = () => {
@@ -12,26 +12,25 @@ const StatsContainer = () => {
         {
             title: "Applied Jobs",
             count: jobStats.Applied || 0,
-            icon: <FaSuitcaseRolling />,
+            icon: <FaRegGrinBeam />,
             color: "#e9b949",
             bcg: "#fcefc7",
         },
         {
             title: "During Interview",
             count: jobStats.Interviewing || 0,
-            icon: <FaCalendarCheck />,
+            icon: <FaRegGrinTongue />,
             color: "#647acb",
             bcg: "#e0e8f9",
         },
         {
             title: "Declined Jobs",
             count: jobStats.Declined || 0,
-            icon: <FaBug />,
+            icon: <FaRegGrimace />,
             color: "#d66a6a",
             bcg: "#ffeeee",
         },
     ];
-
 
     return (
         <Wrapper>

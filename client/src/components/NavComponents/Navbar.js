@@ -4,6 +4,7 @@ import {
     FaUserCircle,
     FaCaretDown,
 } from "react-icons/fa";
+
 import { useAppContext } from "../../context/appContext";
 import Logo from "../Logo";
 import Wrapper from "../../assets/wrappers/Navbar";
@@ -24,7 +25,7 @@ const Navbar = () => {
                 </button>
                 {/* SECOND COLUMN */}
                 <div>
-                    <Logo  />
+                    <Logo />
                     <h3 className="logo-text">dashboard</h3>
                 </div>
 

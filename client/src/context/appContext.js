@@ -110,7 +110,7 @@ const AppProvider = ({ children }) => {
             // Do something with response error
             if (error.response.status === 401) {
                 // > 遇到 401 error 意味着此时 token 失效了(可能是过期或者被手动移除), 我们不能够允许 user 在 token 失效的情况下 update user profile. 所以选择登出 user
-                // console.log("AUTH ERROR");
+                console.log("AUTH ERROR");
                 logoutUser();
             }
             return Promise.reject(error);
@@ -330,7 +330,6 @@ const AppProvider = ({ children }) => {
     # 可以发现在 AddJob component 中所有 input 的都是根据这些更新的 state data 决定的，所以能保证在 edit 界面显示正确的 values
     */
     const setEditJob = (id) => {
-        console.log(`set edit job : ${id}`);
         dispatch({ type: SET_EDIT_JOB, payload: { jobId: id } });
     };
 
@@ -398,7 +397,7 @@ const AppProvider = ({ children }) => {
                 },
             });
         } catch (error) {
-            console.log(error.response.msg);
+            console.log(error);
         }
         clearAlert();
     };

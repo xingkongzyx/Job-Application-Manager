@@ -31,7 +31,7 @@ const JobCard = ({
                 <div className={`top-status ${status}`}>{status}</div>
                 <div className="info">
                     <h5>{position}</h5>
-                    <p>{company}</p>
+                    <p>Company: {company}</p>
                 </div>
             </header>
             <div className="content">

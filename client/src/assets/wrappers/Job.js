@@ -32,6 +32,7 @@ const Wrapper = styled.article`
         margin-right: 2rem;
     }
     .info {
+        margin-top: 0.25rem;
         h5 {
             margin-bottom: 0.25rem;
         }

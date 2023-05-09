@@ -22,7 +22,7 @@ const Wrapper = styled.aside`
     .content {
         background: var(--white);
         width: var(--fluid-width);
-        height: 95vh;
+        /* height: 95vh; */
         border-radius: var(--borderRadius);
         padding: 4rem 2rem;
         position: relative;
@@ -105,7 +105,7 @@ const Wrapper = styled.aside`
         border-radius: 50%;
     }
     .nav-link-add-button:hover {
-        background-color: #004369;
+        background: var(--primary-300);
         /* padding-left: 2rem;
         color: var(--black);
         border: 1.5px solid black;

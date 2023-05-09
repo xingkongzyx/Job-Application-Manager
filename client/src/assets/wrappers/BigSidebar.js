@@ -16,6 +16,7 @@ const Wrapper = styled.aside`
         .content {
             position: sticky;
             top: 0;
+            height: 100vh;
         }
         .show-sidebar {
             margin-left: 0;
@@ -61,17 +62,16 @@ const Wrapper = styled.aside`
             border: 1px solid black;
             font-weight: bold; */
             /* color: var(--grey-500); */
-            border-radius: 50%;
             /* width: 200px;
             height: 200px; */
+            border-radius: 50%;
             color: var(--white);
             background: var(--primary-500);
             position: absolute;
             left: 25%;
-            bottom: -30%;
-            transition: all 1s;
+            bottom: 10%;
+            transition: all 0.2s;
         }
-        /* add */
 
         .nav-link-add-button::before {
             content: "+";
@@ -84,17 +84,13 @@ const Wrapper = styled.aside`
             justify-content: center;
             font-weight: bold;
             font-family: courier;
-
             border-radius: 50%;
         }
         .nav-link-add-button:hover {
-            /* background: var(--grey-400);
-            padding-left: 2rem;
-            color: var(--black);
-            border: 1px solid black; 
-             font-weight: bold;  */
-            background-color: #004369;
+            background: var(--primary-300);
+            padding: 0 0.1rem;
         }
+
         .nav-link:hover {
             background: var(--grey-50);
             padding-left: 3rem;
@@ -116,6 +112,11 @@ const Wrapper = styled.aside`
         }
         .active .icon {
             color: var(--primary-500);
+        }
+        .nav-link-add-button.active {
+            background: gainsboro;
+            color: var(--grey-600);
+            cursor: progress;
         }
     }
 `;
