@@ -6,7 +6,6 @@ import {
 } from "../controllers/authController.js";
 import authenticateUser from "../middleware/auth.js";
 
-
 const router = express.Router();
 
 router.route("/register").post(register);

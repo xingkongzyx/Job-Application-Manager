@@ -12,8 +12,29 @@ import authRouter from "./routes/authRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
 import morgan from "morgan";
 
+// deploy 时需要使用到的 security packages
+import helmet from "helmet";
+import xss from "xss-clean";
+import mongoSanitize from "express-mongo-sanitize";
+import rateLimiter from "express-rate-limit";
+
 const app = express();
 app.use(express.json());
+
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+
+const apiLimiter = rateLimiter({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    message:
+        "Too many requests from this IP, please try again after 15 minutes",
+});
+
+// Apply the rate limiting middleware to all requests
+app.use(apiLimiter);
+
 // * 将 .env 中定义的变量进行 register
 dotenv.config();
 
