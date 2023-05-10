@@ -27,6 +27,7 @@ import {
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
     HANDLE_SEARCH_KEY_CHANGE,
+    CHANGE_PAGE,
 } from "./action";
 import { initialState } from "./appContext";
 
@@ -253,6 +254,10 @@ const reducer = (state, action) => {
                 ...state,
                 [action.payload.name]: action.payload.value,
             };
+
+        case CHANGE_PAGE:
+            return { ...state, page: action.payload.page };
+
         default:
             throw new Error("No such action type", action.type);
     }

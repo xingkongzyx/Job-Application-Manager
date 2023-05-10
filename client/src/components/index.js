@@ -13,6 +13,7 @@ import JobCardInfo from "./JobComponents/JobCardInfo";
 import StatsContainer from "./StatComponents/StatsContainer";
 import ChartsContainer from "./StatComponents/ChartsContainer";
 import Loading from "./Loading";
+import PageBtnContainer from "./PageBtnContainer";
 
 export {
     NavLinks,
@@ -30,4 +31,5 @@ export {
     StatsContainer,
     ChartsContainer,
     Loading,
+    PageBtnContainer,
 };

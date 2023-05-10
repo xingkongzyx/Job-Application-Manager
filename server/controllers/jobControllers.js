@@ -31,9 +31,18 @@ const getAllJobs = async (req, res) => {
         queryObj.position = { $regex: searchKeyword, $options: "i" };
     }
 
-    const jobs = await Job.find(queryObj);
+    let result = Job.find(queryObj);
 
-    res.send({ jobs, numOfJobs: jobs.length, numOfPages: 1 });
+    // setup pagination
+    const pageIdx = Number(req.query.page) || 1;
+    const limitCount = Number(req.query.limit) || 3;
+    const skipCount = (pageIdx - 1) * limitCount;
+    result = result.skip(skipCount).limit(limitCount);
+    const jobs = await result;
+
+    const numOfJobs = await Job.countDocuments(queryObj);
+    const numOfPages = Math.ceil(numOfJobs / limitCount);
+    res.send({ jobs, numOfJobs, numOfPages });
 };
 
 const updateJob = async (req, res) => {

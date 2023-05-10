@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 const Wrapper = styled.article`
-    background: var(--white);
+    /* background: var(--white); */
+    background: #f5f7ff;
+    border: 1px solid lightgray;
     border-radius: var(--borderRadius);
     display: grid;
     grid-template-rows: 1fr auto;
-    box-shadow: var(--shadow-2);
+    box-shadow: var(--shadow-3);
 
     header {
         padding: 1rem 1.5rem;
@@ -32,9 +34,10 @@ const Wrapper = styled.article`
         margin-right: 2rem;
     }
     .info {
-        margin-top: 0.25rem;
+        margin-top: 0.4rem;
         h5 {
             margin-bottom: 0.25rem;
+            color: var(--grey-800);
         }
         p {
             margin: 0;

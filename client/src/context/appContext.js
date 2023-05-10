@@ -31,6 +31,7 @@ import {
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
     HANDLE_SEARCH_KEY_CHANGE,
+    CHANGE_PAGE,
 } from "./action";
 
 // * grab all of those things from the local storage on initial load. Do this right above the initial state. 这样能够确保用户即使刷新界面还能在 localStorage 中找到这些数据.
@@ -306,9 +307,11 @@ const AppProvider = ({ children }) => {
     // # 用于获得当前用户所创建过的所有 Jobs
     const getAllJobs = async () => {
         let url = "/jobs";
-        const { searchKeyWord } = state;
+        const { searchKeyWord, page } = state;
         if (searchKeyWord) {
-            url = `/jobs?search=${searchKeyWord}`;
+            url = `/jobs?search=${searchKeyWord}&page=${1}`;
+        } else {
+            url = `/jobs?page=${page}`;
         }
         dispatch({ type: GET_JOBS_BEGIN });
         try {
@@ -402,6 +405,11 @@ const AppProvider = ({ children }) => {
         clearAlert();
     };
 
+    // 用于改变当前所在的工作显示的页码
+    const changePage = (page) => {
+        dispatch({ type: CHANGE_PAGE, payload: { page } });
+    };
+
     /* 
     # 不改变state value, 是 helper function, 用于将数据添加到 localStorage, 或者从 localStorage 中移除。他们会在用户初次登陆或者最后登出时被调用。
     */
@@ -436,6 +444,7 @@ const AppProvider = ({ children }) => {
                 editJob,
                 showJobStats,
                 handleSearchKeyChange,
+                changePage,
             }}
         >
             {children}

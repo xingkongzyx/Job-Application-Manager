@@ -27,10 +27,15 @@ const JobCard = ({
     return (
         <Wrapper>
             <header>
-                <div className="main-icon">{company.charAt(0)}</div>
+                <div className="main-icon">
+                    {company.substring(0, 2)}
+                </div>
                 <div className={`top-status ${status}`}>{status}</div>
                 <div className="info">
-                    <h5>{position}</h5>
+                    <h5>
+                        {position.charAt(0).toUpperCase() +
+                            position.slice(1)}
+                    </h5>
                     <p>Company: {company}</p>
                 </div>
             </header>

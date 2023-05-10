@@ -4,7 +4,7 @@ import { bgGreen, bgMagentaBright } from "console-log-colors";
 import dotenv from "dotenv";
 // * 将 .env 中定义的变量进行 register
 dotenv.config(".env");
-console.log(process.env); // remove this after you've confirmed it is working
+
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/auth.js";
