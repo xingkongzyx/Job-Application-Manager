@@ -34,10 +34,10 @@ MERN Stack Application for tracking Job Search Process
 ### Demo Images
 
 <img src="./github_demo_images/demo1.png" style="zoom:50%;" />
-<br />
+<!-- <br />
 <img src="./github_demo_images/demo2.png" style="zoom:50%;" />
 <br />
-<img src="./github_demo_images/demo3.png" style="zoom:50%;" />
+<img src="./github_demo_images/demo3.png" style="zoom:50%;" /> -->
 
 ---
 
