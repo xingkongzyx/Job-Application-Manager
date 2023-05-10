@@ -115,8 +115,8 @@ const Wrapper = styled.aside`
         }
         .nav-link-add-button.active {
             background: gainsboro;
-            color: var(--grey-600);
-            cursor: progress;
+            color: #8e9195f7;
+            /* cursor: pointer; */
         }
     }
 `;
