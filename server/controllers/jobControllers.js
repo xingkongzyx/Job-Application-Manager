@@ -35,7 +35,7 @@ const getAllJobs = async (req, res) => {
 
     // setup pagination
     const pageIdx = Number(req.query.page) || 1;
-    const limitCount = Number(req.query.limit) || 3;
+    const limitCount = Number(req.query.limit) || 20;
     const skipCount = (pageIdx - 1) * limitCount;
     result = result.skip(skipCount).limit(limitCount);
     const jobs = await result;
