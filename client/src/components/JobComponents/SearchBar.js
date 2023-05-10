@@ -1,6 +1,6 @@
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/SearchContainer";
-
+import { DebounceInput } from "react-debounce-input";
 function SearchBar() {
     const { searchKeyWord, handleSearchKeyChange } = useAppContext();
 
@@ -18,13 +18,14 @@ function SearchBar() {
                 {/* search position */}
                 <div className="form-center">
                     <div className="form-row">
-                        <input
+                        <DebounceInput
                             type="text"
                             className="form-input"
                             name="searchKeyWord"
                             value={searchKeyWord}
                             onChange={handleSearch}
                             placeholder="Please specify the job position you would like to search for"
+                            debounceTimeout={500}
                         />
                     </div>
                 </div>

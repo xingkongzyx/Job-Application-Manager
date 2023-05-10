@@ -44,6 +44,7 @@ const Wrapper = styled.aside`
         padding-top: 2rem;
         display: flex;
         flex-direction: column;
+        width: 45vw;
     }
     .nav-link {
         display: flex;
@@ -78,7 +79,7 @@ const Wrapper = styled.aside`
         color: var(--white);
         background: var(--primary-500);
     }
-    .nav-link-add-button .active {
+    .nav-link-add-button.active {
         display: flex;
         align-items: center;
         margin-top: 3vh;
@@ -87,8 +88,8 @@ const Wrapper = styled.aside`
         border-radius: 50%;
 
         font-weight: bold;
-        color: var(--white);
-        background: var(--primary-500);
+        background: gainsboro;
+        color: #8e9195f7;
     }
     .nav-link-add-button::before {
         content: "+";
